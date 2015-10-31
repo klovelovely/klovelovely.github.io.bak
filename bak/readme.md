@@ -1,1 +1,2 @@
-jekyll
+##scaffold##
+[Preview](http://klovelovely.github.io)
