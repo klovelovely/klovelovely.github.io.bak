@@ -30,8 +30,12 @@ a {
 
 /* 通用类 */
 .anim {
-    -webkit-transition: 1s all ease-out;
-    transition: 1s all ease-out;
+    -webkit-transition: 1s left linear;
+    transition: 1s left linear;
+}
+.animated {
+    -webkit-animation-duration: .4s;
+    animation-duration: .4s;
 }
 
 @import "button.scss";
@@ -40,6 +44,7 @@ a {
 body {
 
 }
+
 
 .gameContainer {
     height: 60%;
@@ -204,8 +209,8 @@ body {
                 background: rgba(247, 197, 40, 1);
             }
             .forehead {
-                -webkit-transform: rotate(-30deg);
-                transform: rotate(-30deg);
+                -webkit-transform: rotate(-60deg);
+                transform: rotate(-60deg);
                 /*background:rgba(255,0,0,.2);*/
             }
             .head {
@@ -214,17 +219,17 @@ body {
                 /*background:rgba(0,255,0,.2);*/
             }
             .jaw {
-                -webkit-transform: rotate(-160deg);
-                transform: rotate(-160deg);
+                -webkit-transform: rotate(-120deg);
+                transform: rotate(-120deg);
                 /*background:rgba(0,0,255,.2);*/
             }
             .forehead-animation {
-                -webkit-animation: forehead-animation .6s steps(4) infinite;
-                animation: forehead-animation .6s steps(4) infinite;
+                -webkit-animation: forehead-animation .4s steps(1, start) infinite;
+                animation: forehead-animation .5s steps(1, start) infinite;
             }
             .jaw-animation {
-                -webkit-animation: jaw-animation .6s infinite linear;
-                animation: jaw-animation .6s infinite linear;
+                -webkit-animation: jaw-animation .4s steps(1, start) infinite;
+                animation: jaw-animation .5s steps(1, start) infinite;
             }
         }
         .pacman-frontface {
@@ -236,116 +241,65 @@ body {
         }
 
         @-webkit-keyframes forehead-animation {
-            /* half open */
+            /* open */
             0% {
-                -webkit-transform: rotate(-30deg);
-                transform: rotate(-30deg);
-            }
-            /* full open */
-            25% {
                 -webkit-transform: rotate(-60deg);
-                transform: rotate(-60deg);
-            }
-            /* half open */
-            50% {
-                -webkit-transform: rotate(-30deg);
-                transform: rotate(-30deg);
             }
             /* closed */
-            75% {
-                -webkit-transform: rotate(0deg);
-                transform: rotate(0deg);
+            50% {
+                -webkit-transform: rotate(-0deg);
             }
-            /* half open */
+            /* open */
             100% {
-                -webkit-transform: rotate(-30deg);
-                transform: rotate(-30deg);
+                -webkit-transform: rotate(-60deg);
             }
         }
 
         @keyframes forehead-animation {
-            /* half open */
+            /* open */
             0% {
-                -webkit-transform: rotate(-30deg);
-                transform: rotate(-30deg);
-            }
-            /* full open */
-            25% {
-                -webkit-transform: rotate(-60deg);
                 transform: rotate(-60deg);
             }
-            /* half open */
-            50% {
-                -webkit-transform: rotate(-30deg);
-                transform: rotate(-30deg);
-            }
             /* closed */
-            75% {
-                -webkit-transform: rotate(0deg);
-                transform: rotate(0deg);
+            50% {
+                transform: rotate(-0deg);
             }
-            /* half open */
+            /* open */
             100% {
-                -webkit-transform: rotate(-30deg);
-                transform: rotate(-30deg);
+                transform: rotate(-60deg);
             }
         }
 
         @-webkit-keyframes jaw-animation {
-            /* half open */
+            /* open */
             0% {
-                -webkit-transform: rotate(-150deg);
-                transform: rotate(-150deg);
-            }
-            /* full open */
-            25% {
                 -webkit-transform: rotate(-120deg);
-                transform: rotate(-120deg);
             }
-            /* half open */
+            /* close */
             50% {
-                -webkit-transform: rotate(-150deg);
-                transform: rotate(-150deg);
-            }
-            /* closed */
-            75% {
                 -webkit-transform: rotate(-180deg);
-                transform: rotate(-180deg);
             }
-            /* half open */
+            /* open */
             100% {
-                -webkit-transform: rotate(-150deg);
-                transform: rotate(-150deg);
+                -webkit-transform: rotate(-120deg);
             }
         }
 
         @keyframes jaw-animation {
-            /* half open */
+            /* open */
             0% {
-                -webkit-transform: rotate(-150deg);
-                transform: rotate(-150deg);
-            }
-            /* full open */
-            25% {
-                -webkit-transform: rotate(-120deg);
                 transform: rotate(-120deg);
             }
-            /* half open */
+            /* close */
             50% {
-                -webkit-transform: rotate(-150deg);
-                transform: rotate(-150deg);
-            }
-            /* closed */
-            75% {
-                -webkit-transform: rotate(-180deg);
                 transform: rotate(-180deg);
             }
-            /* half open */
+            /* open */
             100% {
-                -webkit-transform: rotate(-150deg);
-                transform: rotate(-150deg);
+                transform: rotate(-120deg);
             }
         }
+
     }
 }
 
@@ -520,7 +474,7 @@ button {
 .formContainer {
     position: fixed;
     bottom: 0;
-    z-index: 100;
+    z-index: 200;
     width: 100%;
     height: 2.1rem;
     padding: 0 4%;
@@ -531,7 +485,6 @@ button {
     opacity: 0;
     -webkit-transform: translate3d(0, 100%, 0);
     transform: translate3d(0, 100%, 0);
-    z-index: 200;
     p {
         font-size: .18rem;
         font-weight: bold;
@@ -569,7 +522,7 @@ button {
 
     }
     .formGetGift {
-
+        display: none;
     }
     .formRate {
         display: none;

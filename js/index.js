@@ -8,29 +8,19 @@
      * init
      * @type {string}
      */
-    var stepsPrefix = 'step',
-        totalSteps  = 5,
-        originStep  = getURLParam('originStep'),
-        targetStep  = getURLParam('targetStep');
-
-    var gameContainer = $('.gameContainer');
+    var stepsPrefix   = 'step',
+        //totalSteps  = 5,
+        originStep    = getURLParam('start'),
+        targetStep    = getURLParam('end'),
+        hasMobile     = getURLParam('login') != '' && getURLParam('login') != -1,
+        gameContainer = $('.gameContainer');
 
     /**
      * 页面加载时, 根据url param指定的step, 移动到目标位置
      */
     if (originStep != -1 && targetStep != -1) {
-        if(getURLParam('hasMobile')){
-
-        }
         gotoStep(originStep, targetStep);
     }
-
-    // test
-    $('.gotoStep').click(function () {
-        var targetStep = $(this).attr('data-step');
-        gameContainer.removeClass('step0 step1 step2 step3 step4 step5')
-            .addClass(stepsPrefix + targetStep);
-    });
 
     /**
      * 让pacman前进到指定的步骤
@@ -38,12 +28,13 @@
      */
     function gotoStep(originStep, targetStep) {
         // init
-        var stepStart = stepsPrefix + originStep
-            ,stepEnd = stepsPrefix + targetStep
-            ,gift = gameContainer.find('.gift' + targetStep)
-            ,character = gameContainer.find('.character')
-            ,pacman = gameContainer.find('.character .pacman')
-            ,pacman_frontface = gameContainer.find('.character .pacman-frontface');
+        var stepStart          = stepsPrefix + originStep,
+            stepEnd          = stepsPrefix + targetStep,
+            gift             = gameContainer.find('.gift' + targetStep),
+            hasGift          = gift.length > 0,
+            character        = gameContainer.find('.character'),
+            pacman           = gameContainer.find('.character .pacman'),
+            pacman_frontface = gameContainer.find('.character .pacman-frontface');
 
         // reset pacman到初始位置
         gameContainer.removeClass('step0 step1 step2 step3 step4 step5');
@@ -61,20 +52,30 @@
         // 如果当前位置有礼物, 则pacman切换到笑脸
         setTimeout(function () {
             (function () {
-                if (!!gift.length) {
+                if (hasGift) {
                     pacman.hide();
-                    pacman_frontface.fadeIn();
+                    pacman_frontface.show();
                 }
                 //gift.addClass('active');
             })();
-        }, 2000);
+        }, 2500);
 
         // 显示礼物弹窗 & 表单弹窗
         setTimeout(function () {
-            $('.formContainer').addClass('animated fadeInUp');
-            $('.giftContainer').addClass('animated fadeInDown');
-
-        }, 3000);
+            (function () {
+                $('.formContainer').addClass('animated fadeInUp');
+                if (hasGift) {
+                    $('.giftContainer').addClass('animated fadeInDown');
+                    $('.redeemCode .noCode').hide();
+                    $('.redeemCode .codeGet').fadeIn();
+                }
+                if (hasMobile) {
+                    $('.formRate').show();
+                } else {
+                    $('.formGetGift').show();
+                }
+            })();
+        }, 3600);
 
         // 点击领取礼物时获得兑换码, 同时切换到用户反馈界面
         $('.J_GetGift').on('click', function () {
