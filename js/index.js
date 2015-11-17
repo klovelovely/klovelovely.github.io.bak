@@ -5,7 +5,7 @@
 (function ($) {
 
     /**
-     * init
+     * 变量初始化
      * @type {string}
      */
     var stepsPrefix   = 'step',
@@ -16,19 +16,12 @@
         gameContainer = $('.gameContainer');
 
     /**
-     * 页面加载时, 根据url param指定的step, 移动到目标位置
-     */
-    if (originStep != -1 && targetStep != -1) {
-        gotoStep(originStep, targetStep);
-    }
-
-    /**
      * 让pacman前进到指定的步骤
      * @param targetStep [Number] 要前进到的步骤
      */
     function gotoStep(originStep, targetStep) {
         // init
-        var stepStart          = stepsPrefix + originStep,
+        var stepStart        = stepsPrefix + originStep,
             stepEnd          = stepsPrefix + targetStep,
             gift             = gameContainer.find('.gift' + targetStep),
             hasGift          = gift.length > 0,
@@ -79,10 +72,24 @@
 
         // 点击领取礼物时获得兑换码, 同时切换到用户反馈界面
         $('.J_GetGift').on('click', function () {
-            $('.redeemCode .noCode').hide();
-            $('.redeemCode .codeGet').fadeIn();
-            $('.formGetGift').hide();
-            $('.formRate').fadeIn();
+            $(this).prop('disabled', 'disabled');
+            $.ajax({
+                url     : "http://klovelovely.github.io/api/getRedeemCode.json",
+                data    : {},
+                success : function (result) {
+                    if (result.error != 0) {
+                        alert('错误代码: ' + result.error);
+                    }
+                    $('.redeemCode .noCode').hide();
+                    $('.redeemCode .codeGet .code').text(result.data.redeemCode);
+                    $('.redeemCode .codeGet').fadeIn();
+                    $('.formGetGift').hide();
+                    $('.formRate').fadeIn();
+                },
+                complete: function () {
+                    $(this).removeProp('disabled');
+                }
+            });
         });
 
         // 用户反馈成功后, 显示感谢反馈
@@ -104,5 +111,17 @@
             return -1;
         }
     }
+
+    $(function () {
+
+        debugger;
+        /**
+         * 页面加载时, 根据url param指定的step, 移动到目标位置
+         */
+        if (originStep != -1 && targetStep != -1) {
+            gotoStep(originStep, targetStep);
+        }
+
+    });
 
 })(jQuery);
