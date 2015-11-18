@@ -11,6 +11,20 @@
     <link rel="stylesheet" href="node_modules/animate.css/animate.min.css">
     <link rel="stylesheet" href="node_modules/normalize.css/normalize.css">
     <link rel="stylesheet" href="css/index.css">
+    <script type="text/javascript">
+        /**
+         * 用于获取微信openid
+         * ref: http://www.weixingate.com/
+         */
+        (function() {
+            WgateJs = {};
+            WgateJs.auto_auth=true;
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://st.weixingate.com/";
+            u=u+'st/1702';
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+            g.defer=true; g.async=true; g.src=u; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
 </head>
 <body>
 
