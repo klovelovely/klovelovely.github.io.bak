@@ -136,10 +136,11 @@
 
         });
 
-        // 用户反馈成功后, 显示感谢反馈
+        // 用户反馈成功后, 显示"查看更多"按钮
         $('.formRate .J_RateDown, .formRate .J_RateUp').on('click', function () {
+            $(this).parent().siblings('p').css('visibility', 'hidden');
             $(this).siblings('.button').hide();
-            $(this).text('感谢您的反馈!')
+            $(this).text('查看更多精彩')
         });
     }
 
