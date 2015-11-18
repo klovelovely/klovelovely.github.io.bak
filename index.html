@@ -19,6 +19,8 @@
         (function () {
             WgateJs = {};
             WgateJs.auto_auth = true;
+            alert('自动auth')
+            alert(WgateJs.auto_auth);
             WgateJs.gate_options = {force: 1, info: "basic"};
             WgateJs.ready = function () {
                 var wgateid = WgateJs.getWgateid();
@@ -26,6 +28,7 @@
                     //console.info(user);
                     alert('准备输出微信openid');
                     alert(user);
+                    alert(JSON.stringify(user));
                 });
             }
             var u = (("https:" == document.location.protocol) ? "https" : "http") + "://st.weixingate.com/";
