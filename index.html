@@ -23,7 +23,8 @@
             WgateJs.ready = function () {
                 var wgateid = WgateJs.getWgateid();
                 WgateJs.getWgateUser(function (user) {
-                    console.info(user)
+                    //console.info(user);
+                    alert(user);
                 });
             }
             var u = (("https:" == document.location.protocol) ? "https" : "http") + "://st.weixingate.com/";
