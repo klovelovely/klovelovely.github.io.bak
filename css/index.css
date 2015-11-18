@@ -25,13 +25,18 @@ a {
   text-decoration: none; }
 
 /* 通用类 */
-.anim {
+/*.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+}*/
+.animated.character {
   -webkit-transition: 1s left linear;
-  transition: 1.6s left linear; }
+  transition: 1s left linear; }
 
-.animated {
-  -webkit-animation-duration: .4s;
-  animation-duration: .4s; }
+.animated.fadeInUp,
+.animated.fadeInDown {
+  -webkit-animation-duration: .6s;
+  animation-duration: .6s; }
 
 /*! @license
 *
@@ -61,7 +66,7 @@ a {
   border-color: #EEE;
   font-weight: 300;
   font-size: 16px;
-  font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans","wenquanyi micro hei","Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
+  font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
   text-decoration: none;
   text-align: center;
   line-height: 40px;
@@ -101,7 +106,7 @@ a {
   text-decoration: none;
   background-color: #eeeeee;
   border-color: #cfcfcf;
-  color: #d4d4d4;
+  color: #eee;
   -webkit-transition-duration: 0s;
   transition-duration: 0s;
   -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
@@ -174,7 +179,7 @@ a {
 .button-primary-flat.is-active {
   background-color: #2798eb;
   border-color: #2798eb;
-  color: #0880d7; }
+  color: #eee; }
 
 .button-plain,
 .button-plain-flat {
@@ -958,6 +963,7 @@ button {
       .giftContainer .giftBox .wrapper .giftDesc {
         max-height: 4.5em;
         overflow: hidden;
+        overflow-y: scroll;
         font-size: .16rem;
         padding: 0 .1rem 0;
         margin-bottom: .05rem;

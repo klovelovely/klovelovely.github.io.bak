@@ -36,7 +36,7 @@
         // 将pacman移动到目标位置
         setTimeout(function () {
             (function () {
-                character.addClass('anim');
+                character.addClass('animated');
                 gameContainer.removeClass(stepStart)
                     .addClass(stepEnd);
             })();
@@ -53,14 +53,12 @@
             })();
         }, 2500);
 
-        // 显示礼物弹窗 & 表单弹窗
+        // 显示礼物弹窗 & 表单弹窗 (如果当前位置没有礼物, 则显示下一个即将获得的礼物, 并提醒还需要几步)
         setTimeout(function () {
             (function () {
                 $('.formContainer').addClass('animated fadeInUp');
                 if (hasGift) {
                     $('.giftContainer').addClass('animated fadeInDown');
-                    $('.redeemCode .noCode').hide();
-                    $('.redeemCode .codeGet').fadeIn();
                 }
                 if (hasMobile) {
                     $('.formRate').show();
@@ -70,26 +68,72 @@
             })();
         }, 3600);
 
-        // 点击领取礼物时获得兑换码, 同时切换到用户反馈界面
+        // 点击 "领取礼物" 按钮时获得兑换码, 同时切换显示用户反馈提示框
         $('.J_GetGift').on('click', function () {
-            $(this).prop('disabled', 'disabled');
+
+            // 非空判断
+            var inputUserName = $('.formGetGift .userName'),
+                inputUserMobile = $('.formGetGift .userMobile'),
+                userName = inputUserName.val(),
+                userMobile = inputUserMobile.val();
+            /*if ($.trim(userName) == "") {
+                alert('请输入您的名字~');
+                inputUserName.focus();
+                return false;
+            } else if ($.trim(userMobile) == "") {
+                alert('请输入您的手机号码, 方便领取礼品~');
+                inputUserMobile.focus();
+                return false;
+            } else if ($.trim(userMobile).length != 11) {
+                alert('请输入正确的11位手机号~');
+                inputUserMobile.focus();
+                return false;
+            }*/
+
+            // 与后端通信之前, 禁用领取按钮, 避免重复提交
+            $('.J_GetGift').text('请稍候...').prop('disabled', 'disabled');
+
+            // 将用户输入信息发送给后端保存
             $.ajax({
-                url     : "http://klovelovely.github.io/api/getRedeemCode.json",
-                data    : {},
+                url     : "api/getRedeemCodeSuccess.json",
+                data    : {
+                    "userName": userName,
+                    "userMobile": userMobile
+                },
                 success : function (result) {
+                    var btnGetGift = $('.J_GetGift');
+
+                    // 与后端通信出现错误, 提醒用户并重新启用领取按钮
                     if (result.error != 0) {
-                        alert('错误代码: ' + result.error);
+                        btnGetGift.text('重新领取').removeProp('disabled');
+                        alert('啊哦, 好像出了点问题, 请稍后再试~ \n代码: ' + result.error);
                     }
+
+                    // 与后端通信出现错误, 重新启用领取按钮
+                    btnGetGift.text('恭喜! 获得礼品兑换码成功! :)');
+
                     $('.redeemCode .noCode').hide();
-                    $('.redeemCode .codeGet .code').text(result.data.redeemCode);
-                    $('.redeemCode .codeGet').fadeIn();
-                    $('.formGetGift').hide();
-                    $('.formRate').fadeIn();
+                    $('.redeemCode .codeGet .code').text(result.data.redeemCode).css('color','red');
+                    $('.redeemCode .codeGet').show().addClass('animated bounceIn');
+                    setTimeout(function () {
+                        $('.redeemCode .codeGet').removeClass('bounceIn').addClass('flash');
+                    }, 1000);
+                    setTimeout(function () {
+                        $('.formGetGift').hide();
+                        $('.formRate').fadeIn();
+                    }, 2000);
+
+                },
+                error   : function (XMLHttpRequest, textStatus, errorThrown) {
+                    // 与后端通信出现错误, 重新启用领取按钮
+                    $('.J_GetGift').text('重新领取').removeProp('disabled');
+                    alert('啊哦, 出现错误了, 请稍后再试~ \n错误代码: ' + textStatus)
                 },
                 complete: function () {
-                    $(this).removeProp('disabled');
+
                 }
             });
+
         });
 
         // 用户反馈成功后, 显示感谢反馈
@@ -114,7 +158,6 @@
 
     $(function () {
 
-        debugger;
         /**
          * 页面加载时, 根据url param指定的step, 移动到目标位置
          */

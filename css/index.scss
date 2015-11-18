@@ -29,13 +29,20 @@ a {
 }
 
 /* 通用类 */
-.anim {
+/*.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+}*/
+
+.animated.character {
     -webkit-transition: 1s left linear;
     transition: 1s left linear;
 }
-.animated {
-    -webkit-animation-duration: .4s;
-    animation-duration: .4s;
+
+.animated.fadeInUp,
+.animated.fadeInDown {
+    -webkit-animation-duration: .6s;
+    animation-duration: .6s;
 }
 
 @import "button.scss";
@@ -44,7 +51,6 @@ a {
 body {
 
 }
-
 
 .gameContainer {
     height: 60%;
@@ -387,6 +393,7 @@ button {
             .giftDesc {
                 max-height: 4.5em;
                 overflow: hidden;
+                overflow-y: scroll;
                 font-size: .16rem;
                 padding: 0 .1rem 0;
                 margin-bottom: .05rem;
