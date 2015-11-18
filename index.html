@@ -16,13 +16,24 @@
          * 用于获取微信openid
          * ref: http://www.weixingate.com/
          */
-        (function() {
+        (function () {
             WgateJs = {};
-            WgateJs.auto_auth=true;
-            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://st.weixingate.com/";
-            u=u+'st/1702';
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
-            g.defer=true; g.async=true; g.src=u; s.parentNode.insertBefore(g,s);
+            WgateJs.auto_auth = true;
+            WgateJs.gate_options = {force: 1, info: "basic"};
+            WgateJs.ready = function () {
+                var wgateid = WgateJs.getWgateid();
+                WgateJs.getWgateUser(function (user) {
+                    console.info(user)
+                });
+            }
+            var u = (("https:" == document.location.protocol) ? "https" : "http") + "://st.weixingate.com/";
+            u = u + 'st/1702';
+            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.type = 'text/javascript';
+            g.defer = true;
+            g.async = true;
+            g.src = u;
+            s.parentNode.insertBefore(g, s);
         })();
     </script>
 </head>
@@ -135,6 +146,7 @@
 
         <div class="formRate">
             <p>你对今日服务是否满意</p>
+
             <div class="userInput">
                 <a href="javascript:" class="button button-danger button-rounded J_RateDown">不满意</a>
                 <a href="javascript:" class="button button-primary button-rounded J_RateUp">满意</a>
