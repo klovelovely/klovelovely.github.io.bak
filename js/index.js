@@ -12,7 +12,7 @@
         targetStep     = getURLParam('end'),
         OpenID         = getURLParam('OpenID'),
         activityID     = getURLParam('activityID'),
-        isJoinedMember = getURLParam('login') != '' && getURLParam('login') != -1,
+        isJoinedMember = getURLParam('isNewUser') != '' && getURLParam('isNewUser') != -1,
         gameContainer  = $('.gameContainer'),
         stepsPrefix    = 'step'/*,
          totalSteps  = 5*/;
@@ -98,7 +98,6 @@
                 "activityID": activityID
             },
             success : function (result) {
-                debugger;
                 if (originStep != -1 && targetStep != -1) {
                     gotoStep(originStep, targetStep);
                 }
