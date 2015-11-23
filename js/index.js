@@ -92,7 +92,8 @@
          */
         // 向后端发送用户输入的信息, 获取后端返回的兑换码
         $.ajax({
-            url     : "api/getActivityInfo_newUser.json",
+            /*url     : "api/getActivityInfo_newUser.json",*/
+            url     : "http://123.56.8.204:81/Customer/GetActivityDetail",
             data    : {
                 "OpenID"    : OpenID,
                 "activityID": activityID
