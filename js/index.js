@@ -79,6 +79,9 @@
         }
     }
 
+    /**
+     * main入口
+     */
     $(function () {
 
         /**
@@ -93,7 +96,8 @@
                 "activityID": activityID
             },
             success : function (result) {
-
+                // TODO: 跨域问题 No 'Access-Control-Allow-Origin' header
+                // XMLHttpRequest cannot load http://123.56.8.204/Customer/GetActivityDetail?OpenID=o6_bmjrPTlm6_2sgVt7hMZOPfL2M&activityID=50. is present on the requested resource. Origin 'http://localhost:63342' is therefore not allowed access.
                 var mockData = {
                     "code"   : "0",
                     "message": "",
