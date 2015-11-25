@@ -12,46 +12,16 @@
     <link rel="stylesheet" href="node_modules/animate.css/animate.min.css">
     <link rel="stylesheet" href="node_modules/normalize.css/normalize.css">
     <link rel="stylesheet" href="css/index.css">
-    <!--<script type="text/javascript">
-        /**
-         * 用于获取微信openid
-         * ref: http://www.weixingate.com/
-         */
-        (function () {
-            WgateJs = {};
-            WgateJs.auto_auth = true;
-            alert('自动auth')
-            alert(WgateJs.auto_auth);
-            WgateJs.gate_options = {force: 1, info: "basic"};
-            WgateJs.ready = function () {
-                var wgateid = WgateJs.getWgateid();
-                WgateJs.getWgateUser(function (user) {
-                    //console.info(user);
-                    alert('准备输出微信openid');
-                    alert(user);
-                    alert(JSON.stringify(user));
-                });
-            }
-            var u = (("https:" == document.location.protocol) ? "https" : "http") + "://st.weixingate.com/";
-            u = u + 'st/1702';
-            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-            g.type = 'text/javascript';
-            g.defer = true;
-            g.async = true;
-            g.src = u;
-            s.parentNode.insertBefore(g, s);
-        })();
-    </script>-->
 </head>
 <body>
 
 <section class="gameContainer step0">
     <!-- 一排礼物 -->
-    <div class="map">
+    <div class="separateGiftLayer">
         <div class="gift gift1"></div>
-        <!--<div class="gift gift2"></div>-->
+        <div class="gift gift2"></div>
         <div class="gift gift3"></div>
-        <!--<div class="gift gift4"></div>-->
+        <div class="gift gift4"></div>
         <div class="gift gift5"></div>
         <div class="pathContainer">
             <div class="path"></div>
@@ -80,7 +50,7 @@
         </div>
     </div>
     <!-- 一排礼物 -->
-    <div class="map">
+    <div class="separateGiftLayer">
         <!--<div class="gift gift6"></div>-->
         <div class="gift gift7"></div>
         <!--<div class="gift gift8"></div>-->
@@ -206,7 +176,7 @@
     }
 </style>
 
-<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="js/index.js"></script>
 
 </body>
