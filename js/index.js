@@ -56,10 +56,10 @@
                 if (hasGift) {
                     $('.giftContainer').addClass('animated fadeInDown');
                 }
-                if (isJoinedMember) {
-                    $('.formRate').show();
-                } else {
+                if (mockData.data.user.isNewUser) {
                     $('.formGetGift').show();
+                } else {
+                    $('.formRate').show();
                 }
             })();
         }, 3600);
@@ -75,6 +75,7 @@
         if (strSearch.indexOf(strParamName + '=') != -1) {
             return strSearch.split(strParamName + '=')[1].split('&')[0]
         } else {
+            console.warn('没有在urlParam上找到: ' + strParamName);
             return -1;
         }
     }
@@ -85,19 +86,18 @@
     $(function () {
 
         /**
-         * 页面加载时, 根据url param指定的step, 移动到目标位置
+         * 页面加载时, 获取礼物列表和用户信息
          */
-            // 向后端发送用户输入的信息, 获取后端返回的兑换码
         $.ajax({
             /*url     : "api/getActivityInfo_newUser.json",*/
             url     : "http://123.56.8.204/Customer/GetActivityDetail",
             data    : {
-                "OpenID"    : OpenID,
+                "openID"    : OpenID,
                 "activityID": activityID
             },
             success : function (result) {
-                // TODO: 跨域问题 No 'Access-Control-Allow-Origin' header
-                // XMLHttpRequest cannot load http://123.56.8.204/Customer/GetActivityDetail?OpenID=o6_bmjrPTlm6_2sgVt7hMZOPfL2M&activityID=50. is present on the requested resource. Origin 'http://localhost:63342' is therefore not allowed access.
+
+                // 模拟数据
                 var mockData = {
                     "code"   : "0",
                     "message": "",
@@ -148,7 +148,7 @@
             error   : function (XMLHttpRequest, textStatus, errorThrown) {
                 // 与后端通信出现错误, 重新启用领取按钮
                 $('.J_GetGift').text('重新领取').removeProp('disabled');
-                alert('啊哦, 出现错误了, 请稍后再试~ \n错误代码: ' + textStatus)
+                console.warn('啊哦, 出现错误了, 请稍后再试~ \n错误代码: ' + textStatus)
             },
             complete: function () {
 
@@ -192,13 +192,13 @@
                     "userMobile": userMobile
                 },
                 success : function (result) {
-                    debugger;
+
                     var btnGetGift = $('.J_GetGift');
 
                     // 与后端通信出现错误, 提醒用户并重新启用领取按钮
-                    if (result.error != "0") {
+                    if (result.code != "0") {
                         btnGetGift.text('重新领取').removeProp('disabled');
-                        alert('啊哦, 好像出了点问题, 请稍后再试~ \n代码: ' + result.error);
+                        console.warn('啊哦, 好像出了点问题, 请稍后再试~ \n代码: ' + result.code);
                     }
 
                     // 获取兑换码成功
