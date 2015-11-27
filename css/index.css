@@ -497,7 +497,7 @@ a {
   position: relative;
   width: 100%;
   margin-bottom: .4rem; }
-  .separateGiftLayer .gift {
+  .separateGiftLayer .giftGroupContainer .gift {
     position: absolute;
     top: 0;
     width: 20%;
@@ -511,7 +511,7 @@ a {
     -webkit-transform: scale(0.8);
     transform: scale(0.85);
     opacity: 1; }
-    .separateGiftLayer .gift:before {
+    .separateGiftLayer .giftGroupContainer .gift:before {
       content: '';
       position: absolute;
       bottom: -.08rem;
@@ -521,12 +521,12 @@ a {
       margin-left: -.04rem;
       border: .04rem solid transparent;
       border-top-color: rgba(255, 255, 255, 0.9); }
-    .separateGiftLayer .gift:after {
+    .separateGiftLayer .giftGroupContainer .gift:after {
       content: '';
       display: block;
       clear: both;
       padding-top: 100%; }
-    .separateGiftLayer .gift.active {
+    .separateGiftLayer .giftGroupContainer .gift.active {
       -webkit-transition: all .8s ease-out;
       transition: all .8s ease-out;
       -webkit-transform: rotate(-375deg) scale(1.2);
@@ -534,79 +534,25 @@ a {
       z-index: 1;
       box-shadow: 0 0 0.8rem rgba(0, 0, 0, 0.8);
       opacity: 1; }
-    .separateGiftLayer .gift.active:before {
+    .separateGiftLayer .giftGroupContainer .gift.active:before {
       opacity: 0; }
-  .separateGiftLayer .gift1 {
+  .separateGiftLayer .giftGroupContainer .gift1 {
     left: 0%; }
-  .separateGiftLayer .gift2 {
+  .separateGiftLayer .giftGroupContainer .gift2 {
     left: 20%; }
-  .separateGiftLayer .gift3 {
+  .separateGiftLayer .giftGroupContainer .gift3 {
     left: 40%; }
-  .separateGiftLayer .gift4 {
+  .separateGiftLayer .giftGroupContainer .gift4 {
     left: 60%; }
-  .separateGiftLayer .gift5 {
+  .separateGiftLayer .giftGroupContainer .gift5 {
     left: 80%; }
-  .separateGiftLayer .gift6 {
-    left: 0%; }
-  .separateGiftLayer .gift7 {
-    left: 20%; }
-  .separateGiftLayer .gift8 {
-    left: 40%; }
-  .separateGiftLayer .gift9 {
-    left: 60%; }
-  .separateGiftLayer .gift10 {
-    left: 80%; }
-  .separateGiftLayer .gift11 {
-    left: 0%; }
-  .separateGiftLayer .gift12 {
-    left: 20%; }
-  .separateGiftLayer .gift13 {
-    left: 40%; }
-  .separateGiftLayer .gift14 {
-    left: 60%; }
-  .separateGiftLayer .gift15 {
-    left: 80%; }
-  .separateGiftLayer .gift16 {
-    left: 0%; }
-  .separateGiftLayer .gift17 {
-    left: 20%; }
-  .separateGiftLayer .gift18 {
-    left: 40%; }
-  .separateGiftLayer .gift19 {
-    left: 60%; }
-  .separateGiftLayer .gift20 {
-    left: 80%; }
-  .separateGiftLayer .gift21 {
-    left: 0%; }
-  .separateGiftLayer .gift22 {
-    left: 20%; }
-  .separateGiftLayer .gift23 {
-    left: 40%; }
-  .separateGiftLayer .gift24 {
-    left: 60%; }
-  .separateGiftLayer .gift25 {
-    left: 80%; }
-  .separateGiftLayer .gift26 {
-    left: 0%; }
-  .separateGiftLayer .gift27 {
-    left: 20%; }
-  .separateGiftLayer .gift28 {
-    left: 40%; }
-  .separateGiftLayer .gift29 {
-    left: 60%; }
-  .separateGiftLayer .gift30 {
-    left: 80%; }
-  .separateGiftLayer .gift31 {
-    left: 0%; }
   .separateGiftLayer .pathContainer {
-    padding-top: 14.5%; }
-    .separateGiftLayer .pathContainer .path,
-    .separateGiftLayer .pathContainer .node {
-      opacity: .4; }
+    padding-top: 20%;
+    opacity: .4; }
     .separateGiftLayer .pathContainer .path {
       width: 100%;
       height: 1px;
-      margin: .3rem auto .15rem;
+      margin: .1rem auto;
       /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#202532+0,40d4cd+10,40d4cd+50,40d4cd+90,202532+100&amp;0+0,1+10,1+50,1+90,0+100 */
       background: -moz-linear-gradient(left, rgba(32, 37, 50, 0) 0%, #40d4cd 10%, #40d4cd 50%, #40d4cd 90%, rgba(32, 37, 50, 0) 100%);
       /* FF3.6+ */
@@ -618,24 +564,49 @@ a {
       /* IE10+ */
       background: linear-gradient(to right, rgba(32, 37, 50, 0) 0%, #40d4cd 10%, #40d4cd 50%, #40d4cd 90%, rgba(32, 37, 50, 0) 100%);
       /* W3C */ }
-    .separateGiftLayer .pathContainer .node {
+    .separateGiftLayer .pathContainer .nodeContainer .node {
       position: absolute;
       bottom: -.02rem;
       width: .05rem;
       height: .05rem;
-      margin-left: -.02rem;
+      margin-left: -.025rem;
       border-radius: 50%;
       background: #40d4cd; }
-    .separateGiftLayer .pathContainer .node1 {
+    .separateGiftLayer .pathContainer .nodeContainer .node1 {
       left: 10%; }
-    .separateGiftLayer .pathContainer .node2 {
+    .separateGiftLayer .pathContainer .nodeContainer .node2 {
       left: 30%; }
-    .separateGiftLayer .pathContainer .node3 {
+    .separateGiftLayer .pathContainer .nodeContainer .node3 {
       left: 50%; }
-    .separateGiftLayer .pathContainer .node4 {
+    .separateGiftLayer .pathContainer .nodeContainer .node4 {
       left: 70%; }
-    .separateGiftLayer .pathContainer .node5 {
+    .separateGiftLayer .pathContainer .nodeContainer .node5 {
       left: 90%; }
+  .separateGiftLayer .numberContainer {
+    position: absolute;
+    width: 100%; }
+    .separateGiftLayer .numberContainer .num {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2em;
+      margin-left: -1em;
+      text-align: center;
+      color: white;
+      font-size: .14rem; }
+      .separateGiftLayer .numberContainer .num:after {
+        content: '';
+        padding-top: 100%; }
+    .separateGiftLayer .numberContainer .num1 {
+      left: 0%; }
+    .separateGiftLayer .numberContainer .num2 {
+      left: 20%; }
+    .separateGiftLayer .numberContainer .num3 {
+      left: 40%; }
+    .separateGiftLayer .numberContainer .num4 {
+      left: 60%; }
+    .separateGiftLayer .numberContainer .num5 {
+      left: 80%; }
   .separateGiftLayer .character {
     position: absolute;
     left: 0;
@@ -845,82 +816,6 @@ button {
   background: #000;
   color: #eee;
   font-size: .3rem; }
-
-.numberContainer {
-  position: absolute;
-  width: 100%; }
-  .numberContainer .num {
-    position: absolute;
-    top: -.05rem;
-    width: 20%;
-    text-align: center;
-    color: white;
-    font-size: .14rem; }
-    .numberContainer .num:after {
-      content: '';
-      padding-top: 100%; }
-  .numberContainer .num1 {
-    left: 0%; }
-  .numberContainer .num2 {
-    left: 20%; }
-  .numberContainer .num3 {
-    left: 40%; }
-  .numberContainer .num4 {
-    left: 60%; }
-  .numberContainer .num5 {
-    left: 80%; }
-  .numberContainer .num6 {
-    left: 0%; }
-  .numberContainer .num7 {
-    left: 20%; }
-  .numberContainer .num8 {
-    left: 40%; }
-  .numberContainer .num9 {
-    left: 60%; }
-  .numberContainer .num10 {
-    left: 80%; }
-  .numberContainer .num11 {
-    left: 0%; }
-  .numberContainer .num12 {
-    left: 20%; }
-  .numberContainer .num13 {
-    left: 40%; }
-  .numberContainer .num14 {
-    left: 60%; }
-  .numberContainer .num15 {
-    left: 80%; }
-  .numberContainer .num16 {
-    left: 0%; }
-  .numberContainer .num17 {
-    left: 20%; }
-  .numberContainer .num18 {
-    left: 40%; }
-  .numberContainer .num19 {
-    left: 60%; }
-  .numberContainer .num20 {
-    left: 80%; }
-  .numberContainer .num21 {
-    left: 0%; }
-  .numberContainer .num22 {
-    left: 20%; }
-  .numberContainer .num23 {
-    left: 40%; }
-  .numberContainer .num24 {
-    left: 60%; }
-  .numberContainer .num25 {
-    left: 80%; }
-  .numberContainer .num26 {
-    left: 0%; }
-  .numberContainer .num27 {
-    left: 20%; }
-  .numberContainer .num28 {
-    left: 40%; }
-  .numberContainer .num29 {
-    left: 60%; }
-  .numberContainer .num30 {
-    left: 80%; }
-  .numberContainer .num31 {
-    left: 0%; }
 
 /* 礼物盒弹窗 */
 .giftContainer {
