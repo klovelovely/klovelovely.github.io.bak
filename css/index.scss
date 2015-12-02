@@ -58,11 +58,11 @@ body {
     overflow: auto;
 }
 
-.separateGiftLayer {
+.giftLayer {
     position: relative;
     width: 100%;
     margin-bottom: .4rem;
-    .giftGroupContainer {
+    .giftListContainer {
         .gift {
             position: absolute;
             top: 0;
@@ -158,7 +158,7 @@ body {
     .numberContainer {
         position: absolute;
         width: 100%;
-        .num {
+        .number {
             position: absolute;
             top: 0;
             left: 0;
@@ -173,7 +173,7 @@ body {
             }
         }
         @for $i from 0 to 5 {
-            .num#{$i + 1} {
+            .number#{$i + 1} {
                 left: 10% + 20% * ($i % 5);
             }
         }
@@ -326,9 +326,9 @@ body {
     left: -20%;
 }
 
-@for $i from 1 to 31 {
+@for $i from 1 to 6 {
     .step#{$i} .character {
-        left: 20% * ($i % 5 - 1) + 10%;
+        left: 20% * ($i - 1) + 10%;
     }
 }
 
@@ -344,6 +344,8 @@ button {
 .giftContainer {
     position: fixed;
     top: 2%;
+    left: 0;
+    right: 0;
     z-index: 100;
     min-height: 2.1rem;
     margin: 0 3%;
@@ -362,7 +364,7 @@ button {
             overflow: hidden;
             .giftTitle {
                 margin: 0;
-                padding: .15rem 0;
+                padding: .1rem 0;
                 font-size: .17rem;
                 line-height: 1;
                 font-weight: normal;
@@ -376,7 +378,7 @@ button {
                 background-size: cover;
             }
             .giftName {
-                padding: .15rem 0;
+                padding: .1rem 0 .05rem;
                 font-size: .17rem;
                 line-height: 1;
                 color: #3c3242;
@@ -471,10 +473,9 @@ button {
 /* 领取礼物表单 */
 .formContainer {
     position: fixed;
-    bottom: 0;
+    bottom: .1rem;
     z-index: 200;
     width: 100%;
-    height: 2.1rem;
     padding: 0 4%;
     text-align: center;
     color: #fff;
@@ -484,11 +485,12 @@ button {
     -webkit-transform: translate3d(0, 100%, 0);
     transform: translate3d(0, 100%, 0);
     p {
+        margin: 0;
         font-size: .18rem;
         font-weight: bold;
     }
     .userInput {
-        padding: .15rem 0 .25rem;
+        padding: .15rem 0 .15rem;
         & input {
             width: 47%;
             border: 0 none;

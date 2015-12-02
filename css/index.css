@@ -69,9 +69,9 @@ a {
   font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
   text-decoration: none;
   text-align: center;
-  line-height: 40px;
+  line-height: 1;
   height: 40px;
-  padding: 0 40px;
+  padding: 12px 40px;
   margin: 0;
   display: inline-block;
   appearance: none;
@@ -493,11 +493,11 @@ a {
   padding: 3.5% 6.6667% 0;
   overflow: auto; }
 
-.separateGiftLayer {
+.giftLayer {
   position: relative;
   width: 100%;
   margin-bottom: .4rem; }
-  .separateGiftLayer .giftGroupContainer .gift {
+  .giftLayer .giftListContainer .gift {
     position: absolute;
     top: 0;
     width: 20%;
@@ -511,7 +511,7 @@ a {
     -webkit-transform: scale(0.8);
     transform: scale(0.85);
     opacity: 1; }
-    .separateGiftLayer .giftGroupContainer .gift:before {
+    .giftLayer .giftListContainer .gift:before {
       content: '';
       position: absolute;
       bottom: -.08rem;
@@ -521,12 +521,12 @@ a {
       margin-left: -.04rem;
       border: .04rem solid transparent;
       border-top-color: rgba(255, 255, 255, 0.9); }
-    .separateGiftLayer .giftGroupContainer .gift:after {
+    .giftLayer .giftListContainer .gift:after {
       content: '';
       display: block;
       clear: both;
       padding-top: 100%; }
-    .separateGiftLayer .giftGroupContainer .gift.active {
+    .giftLayer .giftListContainer .gift.active {
       -webkit-transition: all .8s ease-out;
       transition: all .8s ease-out;
       -webkit-transform: rotate(-375deg) scale(1.2);
@@ -534,22 +534,22 @@ a {
       z-index: 1;
       box-shadow: 0 0 0.8rem rgba(0, 0, 0, 0.8);
       opacity: 1; }
-    .separateGiftLayer .giftGroupContainer .gift.active:before {
+    .giftLayer .giftListContainer .gift.active:before {
       opacity: 0; }
-  .separateGiftLayer .giftGroupContainer .gift1 {
+  .giftLayer .giftListContainer .gift1 {
     left: 0%; }
-  .separateGiftLayer .giftGroupContainer .gift2 {
+  .giftLayer .giftListContainer .gift2 {
     left: 20%; }
-  .separateGiftLayer .giftGroupContainer .gift3 {
+  .giftLayer .giftListContainer .gift3 {
     left: 40%; }
-  .separateGiftLayer .giftGroupContainer .gift4 {
+  .giftLayer .giftListContainer .gift4 {
     left: 60%; }
-  .separateGiftLayer .giftGroupContainer .gift5 {
+  .giftLayer .giftListContainer .gift5 {
     left: 80%; }
-  .separateGiftLayer .pathContainer {
+  .giftLayer .pathContainer {
     padding-top: 20%;
     opacity: .4; }
-    .separateGiftLayer .pathContainer .path {
+    .giftLayer .pathContainer .path {
       width: 100%;
       height: 1px;
       margin: .1rem auto;
@@ -564,7 +564,7 @@ a {
       /* IE10+ */
       background: linear-gradient(to right, rgba(32, 37, 50, 0) 0%, #40d4cd 10%, #40d4cd 50%, #40d4cd 90%, rgba(32, 37, 50, 0) 100%);
       /* W3C */ }
-    .separateGiftLayer .pathContainer .nodeContainer .node {
+    .giftLayer .pathContainer .nodeContainer .node {
       position: absolute;
       bottom: -.02rem;
       width: .05rem;
@@ -572,20 +572,20 @@ a {
       margin-left: -.025rem;
       border-radius: 50%;
       background: #40d4cd; }
-    .separateGiftLayer .pathContainer .nodeContainer .node1 {
+    .giftLayer .pathContainer .nodeContainer .node1 {
       left: 10%; }
-    .separateGiftLayer .pathContainer .nodeContainer .node2 {
+    .giftLayer .pathContainer .nodeContainer .node2 {
       left: 30%; }
-    .separateGiftLayer .pathContainer .nodeContainer .node3 {
+    .giftLayer .pathContainer .nodeContainer .node3 {
       left: 50%; }
-    .separateGiftLayer .pathContainer .nodeContainer .node4 {
+    .giftLayer .pathContainer .nodeContainer .node4 {
       left: 70%; }
-    .separateGiftLayer .pathContainer .nodeContainer .node5 {
+    .giftLayer .pathContainer .nodeContainer .node5 {
       left: 90%; }
-  .separateGiftLayer .numberContainer {
+  .giftLayer .numberContainer {
     position: absolute;
     width: 100%; }
-    .separateGiftLayer .numberContainer .num {
+    .giftLayer .numberContainer .number {
       position: absolute;
       top: 0;
       left: 0;
@@ -594,20 +594,20 @@ a {
       text-align: center;
       color: white;
       font-size: .14rem; }
-      .separateGiftLayer .numberContainer .num:after {
+      .giftLayer .numberContainer .number:after {
         content: '';
         padding-top: 100%; }
-    .separateGiftLayer .numberContainer .num1 {
+    .giftLayer .numberContainer .number1 {
       left: 10%; }
-    .separateGiftLayer .numberContainer .num2 {
+    .giftLayer .numberContainer .number2 {
       left: 30%; }
-    .separateGiftLayer .numberContainer .num3 {
+    .giftLayer .numberContainer .number3 {
       left: 50%; }
-    .separateGiftLayer .numberContainer .num4 {
+    .giftLayer .numberContainer .number4 {
       left: 70%; }
-    .separateGiftLayer .numberContainer .num5 {
+    .giftLayer .numberContainer .number5 {
       left: 90%; }
-  .separateGiftLayer .character {
+  .giftLayer .character {
     position: absolute;
     left: 0;
     bottom: 0;
@@ -618,13 +618,13 @@ a {
     -ms-transform: scale(0.5);
     -o-transform: scale(0.5);
     transform: scale(0.5); }
-    .separateGiftLayer .character .pacman {
+    .giftLayer .character .pacman {
       position: relative;
       width: 30px;
       height: 30px; }
-      .separateGiftLayer .character .pacman .forehead,
-      .separateGiftLayer .character .pacman .head,
-      .separateGiftLayer .character .pacman .jaw {
+      .giftLayer .character .pacman .forehead,
+      .giftLayer .character .pacman .head,
+      .giftLayer .character .pacman .jaw {
         position: absolute;
         top: 0;
         left: 0;
@@ -633,7 +633,7 @@ a {
         overflow: hidden;
         -webkit-transform-origin: center bottom;
         transform-origin: center bottom; }
-      .separateGiftLayer .character .pacman .forehead:before {
+      .giftLayer .character .pacman .forehead:before {
         content: '';
         position: absolute;
         top: 40%;
@@ -642,9 +642,9 @@ a {
         height: 4px;
         background-color: rgba(0, 0, 0, 0.8);
         z-index: 1; }
-      .separateGiftLayer .character .pacman .forehead:after,
-      .separateGiftLayer .character .pacman .head:after,
-      .separateGiftLayer .character .pacman .jaw:after {
+      .giftLayer .character .pacman .forehead:after,
+      .giftLayer .character .pacman .head:after,
+      .giftLayer .character .pacman .jaw:after {
         content: '';
         position: absolute;
         top: 0;
@@ -653,25 +653,25 @@ a {
         height: 200%;
         border-radius: 50%;
         background: #f7c528; }
-      .separateGiftLayer .character .pacman .forehead {
+      .giftLayer .character .pacman .forehead {
         -webkit-transform: rotate(-60deg);
         transform: rotate(-60deg);
         /*background:rgba(255,0,0,.2);*/ }
-      .separateGiftLayer .character .pacman .head {
+      .giftLayer .character .pacman .head {
         -webkit-transform: rotate(-90deg);
         transform: rotate(-90deg);
         /*background:rgba(0,255,0,.2);*/ }
-      .separateGiftLayer .character .pacman .jaw {
+      .giftLayer .character .pacman .jaw {
         -webkit-transform: rotate(-120deg);
         transform: rotate(-120deg);
         /*background:rgba(0,0,255,.2);*/ }
-      .separateGiftLayer .character .pacman .forehead-animation {
+      .giftLayer .character .pacman .forehead-animation {
         -webkit-animation: forehead-animation 0.4s steps(1, start) infinite;
         animation: forehead-animation 0.5s steps(1, start) infinite; }
-      .separateGiftLayer .character .pacman .jaw-animation {
+      .giftLayer .character .pacman .jaw-animation {
         -webkit-animation: jaw-animation 0.4s steps(1, start) infinite;
         animation: jaw-animation 0.5s steps(1, start) infinite; }
-    .separateGiftLayer .character .pacman-frontface {
+    .giftLayer .character .pacman-frontface {
       display: none;
       width: .3rem;
       height: .3rem;
@@ -733,82 +733,7 @@ a {
   left: 70%; }
 
 .step5 .character {
-  left: -10%; }
-
-.step6 .character {
-  left: 10%; }
-
-.step7 .character {
-  left: 30%; }
-
-.step8 .character {
-  left: 50%; }
-
-.step9 .character {
-  left: 70%; }
-
-.step10 .character {
-  left: -10%; }
-
-.step11 .character {
-  left: 10%; }
-
-.step12 .character {
-  left: 30%; }
-
-.step13 .character {
-  left: 50%; }
-
-.step14 .character {
-  left: 70%; }
-
-.step15 .character {
-  left: -10%; }
-
-.step16 .character {
-  left: 10%; }
-
-.step17 .character {
-  left: 30%; }
-
-.step18 .character {
-  left: 50%; }
-
-.step19 .character {
-  left: 70%; }
-
-.step20 .character {
-  left: -10%; }
-
-.step21 .character {
-  left: 10%; }
-
-.step22 .character {
-  left: 30%; }
-
-.step23 .character {
-  left: 50%; }
-
-.step24 .character {
-  left: 70%; }
-
-.step25 .character {
-  left: -10%; }
-
-.step26 .character {
-  left: 10%; }
-
-.step27 .character {
-  left: 30%; }
-
-.step28 .character {
-  left: 50%; }
-
-.step29 .character {
-  left: 70%; }
-
-.step30 .character {
-  left: -10%; }
+  left: 90%; }
 
 /* 其他 */
 button {
@@ -821,6 +746,8 @@ button {
 .giftContainer {
   position: fixed;
   top: 2%;
+  left: 0;
+  right: 0;
   z-index: 100;
   min-height: 2.1rem;
   margin: 0 3%;
@@ -839,7 +766,7 @@ button {
       overflow: hidden; }
       .giftContainer .giftBox .wrapper .giftTitle {
         margin: 0;
-        padding: .15rem 0;
+        padding: .1rem 0;
         font-size: .17rem;
         line-height: 1;
         font-weight: normal;
@@ -851,7 +778,7 @@ button {
         background: no-repeat center;
         background-size: cover; }
       .giftContainer .giftBox .wrapper .giftName {
-        padding: .15rem 0;
+        padding: .1rem 0 .05rem;
         font-size: .17rem;
         line-height: 1;
         color: #3c3242; }
@@ -925,10 +852,9 @@ button {
 /* 领取礼物表单 */
 .formContainer {
   position: fixed;
-  bottom: 0;
+  bottom: .1rem;
   z-index: 200;
   width: 100%;
-  height: 2.1rem;
   padding: 0 4%;
   text-align: center;
   color: #fff;
@@ -938,10 +864,11 @@ button {
   -webkit-transform: translate3d(0, 100%, 0);
   transform: translate3d(0, 100%, 0); }
   .formContainer p {
+    margin: 0;
     font-size: .18rem;
     font-weight: bold; }
   .formContainer .userInput {
-    padding: .15rem 0 .25rem; }
+    padding: .15rem 0 .15rem; }
     .formContainer .userInput input {
       width: 47%;
       border: 0 none;

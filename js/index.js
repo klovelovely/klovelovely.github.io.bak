@@ -6,10 +6,12 @@
 
     /**
      * 全局变量初始化
-     * @type {string}
+     * @type {Object}
      */
-    var pacman;
+    console.warn('初始化全局变量 window.pacman:');
+    var pacman = {};
     window.pacman = {
+        APIPrefix : 'http://123.56.8.204/',
         openID    : getURLParam('openID'),
         activityID: getURLParam('activityID'),
         merchantID: getURLParam('merchantID')
@@ -17,34 +19,126 @@
     pacman = window.pacman;
     console.log('pacman =>', pacman);
 
-    var giftDialog = {
-        show: function (currentGift) {
-            // TODO: [次要] 为啥这里是首字母大写 -> GiftLogo, GiftName, GiftDes
-            var giftContainer = $('.giftContainer');
-            giftContainer.find('.giftPhoto').css('background-image', 'url(' + currentGift.giftLogo + ')');
-            giftContainer.find('.giftName').text(currentGift.giftName);
-            giftContainer.find('.giftDesc').text(currentGift.giftDes);
-            giftContainer.addClass('animated fadeInDown');
-        },
-        hide: function () {
-            $('.giftContainer').removeClass('animated fadeInDown');
+    /**
+     * 根据提供的礼物数据, 初始化活动
+     * TODO: [延后] 每行步骤不一定是5个, 有可能是2/3/4个, 需要考虑 => "根据返回的json动态填充礼物层"
+     * @param objResult {Object} 构建pacman所需的信息
+     * data: Object
+     * currentAction: Object
+     * giftList: Array[5]
+     * user: Object
+     */
+    function initGiftInfo(objResult) {
+        // init
+        var gameContainer              = $('.gameContainer'),
+            giftNumberPerLayer         = 5,
+            giftList                   = objResult.data.giftList,
+            totalGiftNumber            = giftList.length,
+            totalGiftLayerNumber       = totalGiftNumber % giftNumberPerLayer != 0 ? totalGiftNumber / giftNumberPerLayer + 1 : totalGiftNumber / 5,
+            giftLayerClassName         = 'giftLayer',
+            giftListContainerClassName = 'giftListContainer',
+            giftItemClassName          = 'gift',
+            nodeContainerClassName     = 'nodeContainer',
+            nodeItemClassName          = 'node',
+            numberContainerClassName   = 'numberContainer',
+            numberItemClassName        = 'number';
+
+        // 添加礼物层
+        for (var currentGiftLayerIndex = 0; currentGiftLayerIndex < totalGiftLayerNumber; currentGiftLayerIndex++) {
+
+            var uniqueGiftLayerSelector = giftLayerClassName + (Number(currentGiftLayerIndex) + 1);
+
+            var giftLayerTemplate = ['<div class="', giftLayerClassName, ' ', uniqueGiftLayerSelector, '">',
+                    '<div class="', giftListContainerClassName, '"></div>',
+                    '<div class="pathContainer">',
+                    '<div class="path"></div>',
+                    '<div class="', nodeContainerClassName, '"></div>',
+                    '<div class="', numberContainerClassName, '"></div>',
+                    '<div class="character">',
+                    '<div class="pacman">',
+                    '<div class="head"></div>',
+                    '<div class="forehead forehead-animation"></div>',
+                    '<div class="jaw jaw-animation"></div>',
+                    '</div>',
+                    '<div class="pacman-frontface"></div>',
+                    '</div>',
+                    '</div>',
+                    '</div>'].join(''),
+                pacmanTemplate    = '<div class="character"> <div class="pacman"> <div class="head"></div> <div class="forehead forehead-animation"></div> <div class="jaw jaw-animation"></div> </div> <div class="pacman-frontface"> </div> </div>';
+
+            // 礼物层模板
+            gameContainer.append(giftLayerTemplate);
+            console.log('礼物层模板 giftLayerTemplate =>', gameContainer.children().last());
+            // pacman模板 TODO:获得objResult.data.currentAction.end值, 把pacman放在对应的层开头  (另外, 这个模板似乎应该考虑放在gotoStep()函数体中
+
+            // 添加礼物(gift), 节点(node), 数字(number)列表
+            console.warn('开始向当前礼物层<%d>, 循环填充礼物:', currentGiftLayerIndex + 1);
+            for (var i = 0; i < giftNumberPerLayer; i++) {
+                var currentGiftItemIndex  = currentGiftLayerIndex * giftNumberPerLayer + i,
+                    currentGiftItemNumber = currentGiftLayerIndex * giftNumberPerLayer + i + 1,
+                    currentGiftLayer      = $('.' + uniqueGiftLayerSelector),
+                    isCurrentPlaceHasGift = giftList[currentGiftItemIndex].giftName != '';
+                if(isCurrentPlaceHasGift){
+                    console.log('%c第%d个礼物 => ', 'font-weight:bold;', currentGiftItemNumber, giftList[currentGiftItemIndex]);
+                }
+
+                if(isCurrentPlaceHasGift){
+                    $('<div class="' + giftItemClassName + ' ' + giftItemClassName + currentGiftItemNumber + '"></div>')
+                        .appendTo(currentGiftLayer.find('.' + giftListContainerClassName))
+                        .css({
+                            'background-image': 'url(' + giftList[currentGiftItemIndex].giftLogo + ')',
+                        }).attr({
+                            'data-name': giftList[currentGiftItemIndex]['GiftName'],
+                            'data-logo': giftList[currentGiftItemIndex]['GiftLogo'],
+                            'data-desc': giftList[currentGiftItemIndex]['GiftDes']
+                        });
+                }
+                $('<div class="' +
+                    nodeItemClassName +
+                    ' ' +
+                    nodeItemClassName +
+                    currentGiftItemNumber +
+                    '"></div>').appendTo(currentGiftLayer.find('.' + nodeContainerClassName));
+                $('<div class="' +
+                    numberItemClassName +
+                    ' ' +
+                    numberItemClassName +
+                    currentGiftItemNumber +
+                    '">' + currentGiftItemNumber +
+                    '</div>').appendTo(currentGiftLayer.find('.' + numberContainerClassName));
+            }
+
         }
-    };
+    }
 
     /**
      * 让pacman前进到指定的步骤
-     * @param objGiftList 每一步所包含的礼物等相关信息
+     * @param objResult 每一步所包含的礼物等相关信息
      */
-    function gotoStep(objGiftList) {
+    function gotoStep(objResult) {
         // init
-        var gameContainer    = $('.gameContainer'),
-            stepStart        = 'step' + objGiftList.data.currentAction.start,
-            stepEnd          = 'step' + objGiftList.data.currentAction.end,
-            currentGift      = objGiftList.data.giftList[objGiftList.data.currentAction.end - 1],
-            hasGift          = currentGift.GiftName != "",
-            character        = gameContainer.find('.character'),
-            pacman           = gameContainer.find('.character .pacman'),
-            pacman_frontface = gameContainer.find('.character .pacman-frontface');
+        var gameContainer      = $('.gameContainer'),
+            giftNumberPerLayer = 5,
+            stepStart          = 'step' + objResult.data.currentAction.start % giftNumberPerLayer,
+            stepEnd            = 'step' + objResult.data.currentAction.end % giftNumberPerLayer,
+            currentGiftIndex   = objResult.data.currentAction.end - 1,
+            giftList           = objResult.data.giftList,
+            currentGift        = giftList[currentGiftIndex],
+            hasGift            = objResult.data.currentAction.hasGift,
+            character          = gameContainer.find('.character'),
+            pacman             = gameContainer.find('.character .pacman'),
+            pacman_frontface   = gameContainer.find('.character .pacman-frontface');
+
+        var nextGift;
+        if(!hasGift){
+            $.each(giftList, function (index, item) {
+                if (index > currentGiftIndex && index < giftList.length) {
+                    nextGift = giftList[index];
+                    nextGift['needSteps'] = index - currentGiftIndex;
+                    return false;
+                }
+            });
+        }
 
         // reset pacman到初始位置
         gameContainer.removeClass('step0 step1 step2 step3 step4 step5');
@@ -76,62 +170,48 @@
                 // 表单弹窗
                 $('.formContainer').addClass('animated fadeInUp');
                 // 礼物弹窗
-                if (hasGift) {
-                    giftDialog.show(currentGift);
+                var giftContainer = $('.giftContainer');
+
+                if (hasGift) { // 当前步骤上有礼物
+                    giftContainer.find('.giftPhoto').css('background-image', 'url(' + currentGift.giftLogo + ')');
+                    giftContainer.find('.giftName').text(currentGift.giftName);
+                    giftContainer.find('.giftDesc').text(currentGift.giftDes);
+                } else {
+                    giftContainer.find('.redeemCode').empty();
+                    if (nextGift) { // 当前步骤上没有礼物, 距离下一个礼物还有 x 步, 显示下一个即将获得的礼物的信息
+                        giftContainer.find('.giftTitle').text('还差 ' + nextGift.needSteps + ' 步就可以获得下一个礼物啦!');
+                        giftContainer.find('.giftPhoto').css('background-image', 'url(' + nextGift.giftLogo + ')');
+                        giftContainer.find('.giftName').text(nextGift.giftName);
+                        giftContainer.find('.giftDesc').text(nextGift.giftDes);
+                    } else { // 后面已经没有礼物了 (没有实际意义, 暂时不考虑这种可能性)
+                        console.warn('后面已经没有礼物了 (没有实际意义, 暂时不考虑这种可能性)')
+                    }
                 }
+                giftContainer.addClass('animated fadeInDown');
                 // 如果是新用户, 则表单弹窗里的内容为填写姓名手机号;
                 // 如果是老用户, 则直接给用户评价选项(满意/不满意).
-                if (objGiftList.data.user.isNewUser) {
+                if (objResult.data.user.isNewUser) {
                     $('.formGetGift').show();
                 } else {
+
+                    // 显示兑换码
+                    $('.redeemCode .noCode').hide();
+                    $('.redeemCode .codeGet .code').text(objResult.data.redeemCode).css('color', 'red');
+                    $('.redeemCode .codeGet').show().addClass('animated bounceIn');
+                    setTimeout(function () {
+                        $('.redeemCode .codeGet').removeClass('bounceIn').addClass('flash');
+                    }, 1000);
+                    setTimeout(function () {
+                        $('.formGetGift').hide();
+                        $('.formRate').fadeIn();
+                    }, 2000);
+
                     $('.formRate').show();
                 }
             })();
         }, 3600);
 
     }
-
-    /**
-     * 根据提供的礼物数据, 初始化活动
-     * TODO: [次要] GiftDes desc少了个c
-     * TODO: [延后] 每行步骤不一定是5个, 有可能是2/3/4个, 需要考虑 => "根据返回的json动态填充.separateGiftLayer"
-     * @param giftList {Array} 礼物列表
-     */
-    var initGiftInfo = function (giftList) {
-        // init
-        var gameContainer = $('.gameContainer'),
-            tplGift = '<div class="gift gift$"></div>';
-
-        debugger;
-
-        $.each(giftList, function (index, giftItem) {
-
-            gameContainer.find()
-
-            if (giftList[index].GiftName == '') {
-                currentGiftItem.hide();
-            } else {
-                currentGiftItem.css('background-image', 'url(' + giftList[index]['GiftLogo'] + ')');
-                // 把拿到的数据存放在node节点上
-                // 当前第几步
-                currentGiftItem.attr('data-step', giftList[index]['RegCount']);
-                // 礼物名称
-                currentGiftItem.attr('data-name', giftList[index]['GiftName']);
-                // 礼物图片
-                currentGiftItem.attr('data-logo', giftList[index]['GiftLogo']);
-                // 礼物简介
-                currentGiftItem.attr('data-desc', giftList[index]['GiftDes']);
-                /*var json = {
-                 activityID: "53",
-                 GiftDes: "柑橘类果汁，特别是橙汁中的黄酮能有效抑制乳腺癌、肺癌等细胞的增生。经常饮用橙汁也可以有效预防某些慢性疾病、维持心肌功能以及降低血压。研究显示，每天喝3杯橙汁可以增加体内高密度脂蛋白（HDL）的含量，从而降低患心脏病的可能。此外，在服药期间吃一些橙子或饮橙汁，可增加机体对药物的吸收量，从而使药效加倍。",
-                 GiftLogo: "http://p0.55tuanimg.com/static/goods/ckeditor/2013/02/04/17/ckeditor_1359971186_8668_wm.jpg",
-                 GiftName: "橙汁",
-                 ID: "137",
-                 RegCount: "1"
-                 };*/
-            }
-        });
-    };
 
     /**
      * 从url上获取URL上指定的参数
@@ -157,7 +237,7 @@
          */
         $.ajax({
             /*url     : "api/getActivityInfo_newUser.json",*/
-            url     : "http://123.56.8.204/Customer/GetCustomerRegDetail",
+            url     : pacman.APIPrefix + "Customer/GetCustomerRegDetail",
             type    : "post",
             data    : {
                 "openID"    : pacman.openID,
@@ -167,55 +247,16 @@
 
                 var objResult = typeof result == "string" ? JSON.parse(result) : result;
 
+                console.warn('页面加载时, 拿到的初始化数据:');
                 console.log('objResult =>', objResult);
-
-                // 模拟数据
-                /*var objResult = {
-                 "code"   : "0",
-                 "message": "",
-                 "data"   : {
-                 "user"         : {
-                 "isNewUser" : true,
-                 "openID"    : "o6_bmjrPTlm6_2sgVt7hMZOPfL2M",
-                 "nickname"  : "Band",
-                 "sex"       : 1,
-                 "headimgurl": "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0"
-                 },
-                 "currentAction": {
-                 "start"  : 0,
-                 "end"    : 1,
-                 "hasGift": true
-                 },
-                 "giftList"     : [
-                 {
-                 "giftInfo": {
-                 "name"       : "橙汁",
-                 "description": "柑橘类果汁，特别是橙汁中的黄酮能有效抑制乳腺癌、肺癌等细胞的增生。经常饮用橙汁也可以有效预防某些慢性疾病、维持心肌功能以及降低血压。研究显示，每天喝3杯橙汁可以增加体内高密度脂蛋白（HDL）的含量，从而降低患心脏病的可能。此外，在服药期间吃一些橙子或饮橙汁，可增加机体对药物的吸收量，从而使药效加倍。",
-                 "photo"      : "http://p0.55tuanimg.com/static/goods/ckeditor/2013/02/04/17/ckeditor_1359971186_8668_wm.jpg"
-                 }
-                 },
-                 {},
-                 {
-                 "giftInfo": {
-                 "name"       : "蓝莓汁",
-                 "description": "蓝莓被联合国粮农组织列为人类五大健康食品之一，被誉为“21世纪功能性保健浆果”，蓝莓果汁含有丰富的维生素和氨基酸，蓝莓果汁含有丰富的花青素，具有清除氧自由基、保护视力、延缓脑神经衰老、提高记忆力的作用。由于蓝莓对保护和增强视力的独到效果，蓝莓又被称为“飞行员的早餐”，是英、美空军指定的飞行员指定早餐食品。",
-                 "photo"      : "http://p1.meituan.net/deal/fbd19498af14fa6f63aa4be2c54995e653001.jpg"
-                 }
-                 },
-                 {},
-                 {
-                 "giftInfo": {
-                 "name"       : "卡布奇诺",
-                 "description": "20世纪初期，意大利人阿奇布夏发明蒸汽压力咖啡机的同时，也发展出了卡布奇诺咖啡。卡布奇诺是一种加入以同量的意大利特浓咖啡和蒸汽泡沫牛奶相混合的意大利咖啡。此时咖啡的颜色，就像卡布奇诺教会的修士在深褐色的外衣上覆上一条头巾一样，咖啡因此得名。",
-                 "photo"      : "http://c.hiphotos.baidu.com/baike/w%3D268/sign=11a04d3eccfc1e17fdbf8b377290f67c/0b7b02087bf40ad130d03dcb542c11dfa9eccee6.jpg"
-                 }
-                 }
-                 ]
-                 }
-                 };*/
+                // TODO: 老顾客 => 从第10步到第11步 => 这个活动一共只有5步, 这里循环应该做一下限制(最后一次礼物获得之后, 可以考虑让start = end = 最大步数5;
+                // TODO: %c老顾客 => 从第%s步到第%d步 => objResult.data.currentAction.start为什么是字符串, 而end是数字类型
+                objResult.data.user.isNewUser
+                    ? console.log('%c新顾客 => 从第%d步到第%d步 => 当前位置上是否有礼物:%s => 木有兑换码', 'font-family:"Microsoft Yahei";font-size:1.5em;color:#c00;', objResult.data.currentAction.start, objResult.data.currentAction.end, objResult.data.currentAction.hasGift)
+                    : console.log('%c老顾客 => 从第%d步到第%d步 => 当前位置上是否有礼物:%s => 兑换码为%s', 'font-family:"Microsoft Yahei";font-size:1.5em;color:#c00;', Number(objResult.data.currentAction.start), objResult.data.currentAction.end, objResult.data.currentAction.hasGift, objResult.data.currentAction.redeemCode);
 
                 // 初始化礼物信息
-                initGiftInfo(objResult.data.giftList);
+                initGiftInfo(objResult);
 
                 // 移动pacman到指定步骤
                 gotoStep(objResult);
@@ -241,30 +282,30 @@
                 inputUserMobile = $('.formGetGift .userMobile'),
                 userName        = inputUserName.val(),
                 userMobile      = inputUserMobile.val();
-            /*if ($.trim(userName) == "") {
-             alert('请输入您的名字~');
-             inputUserName.focus();
-             return false;
-             } else if ($.trim(userMobile).length > 5) {
-             alert('您输入的内容过长~');
-             inputUserMobile.focus();
-             return false;
-             } else if ($.trim(userMobile) == "") {
-             alert('请输入您的手机号码, 方便领取礼品~');
-             inputUserMobile.focus();
-             return false;
-             } else if ($.trim(userMobile).length != 11) {
-             alert('请输入正确的11位手机号~');
-             inputUserMobile.focus();
-             return false;
-             }*/
+            if ($.trim(userName) == "") {
+                alert('请输入您的名字~');
+                inputUserName.focus();
+                return false;
+            } else if ($.trim(userName).replace(/[^\x00-\xff]/g, '  ').length > 10) {
+                alert('您输入的内容过长~');
+                inputUserMobile.focus();
+                return false;
+            } else if ($.trim(userMobile) == "") {
+                alert('请输入您的手机号码, 方便领取礼品~');
+                inputUserMobile.focus();
+                return false;
+            } else if ($.trim(userMobile).length != 11) {
+                alert('请输入正确的11位手机号~');
+                inputUserMobile.focus();
+                return false;
+            }
 
             // 与后端通信之前, 禁用领取按钮, 避免重复提交
             $('.J_GetGift').text('请稍候...').prop('disabled', 'disabled');
 
             // 向后端发送用户输入的信息, 获取后端返回的兑换码
             $.ajax({
-                url     : "http://123.56.8.204/Customer/CreateCustmoerDetail",
+                url     : pacman.APIPrefix + "Customer/CreateCustmoerDetail",
                 type    : "post",
                 data    : {
                     "cname"     : userName,
@@ -277,28 +318,28 @@
 
                     var objResult = typeof result == "string" ? JSON.parse(result) : result;
 
-                    debugger;
-
                     var btnGetGift = $('.J_GetGift');
 
                     // 与后端通信出现错误, 提醒用户并重新启用领取按钮
-                    if (objResult.code != "0") {
+                    if (objResult.code != "200") {
                         btnGetGift.text('重新领取').removeProp('disabled');
-                        console.warn('啊哦, 好像出了点问题, 请稍后再试~ \n代码: ' + objResult);
+                        console.warn('啊哦, 好像出了点问题, 请稍后再试~ \n状态码: ' + objResult);
+                        return;
                     }
 
-                    // 获取兑换码成功
+                    // 获取兑换码成功, 显示兑换码
+                    console.log('获取兑换码成功 => ', objResult.data.redeemCode);
                     btnGetGift.text('恭喜! 获得礼品兑换码成功! :)');
                     $('.redeemCode .noCode').hide();
                     $('.redeemCode .codeGet .code').text(objResult.data.redeemCode).css('color', 'red');
                     $('.redeemCode .codeGet').show().addClass('animated bounceIn');
                     setTimeout(function () {
                         $('.redeemCode .codeGet').removeClass('bounceIn').addClass('flash');
-                    }, 1000);
+                    }, 2000);
                     setTimeout(function () {
                         $('.formGetGift').hide();
                         $('.formRate').fadeIn();
-                    }, 2000);
+                    }, 3000);
 
                 },
                 error   : function (XMLHttpRequest, textStatus, errorThrown) {
@@ -318,7 +359,7 @@
          */
         $('.formRate .J_RateDown, .formRate .J_RateUp').on('click', function () {
             $.ajax({
-                url     : baseDomain + "/Customer/Rate",
+                url     : pacman.APIPrefix + "Customer/Rate",
                 type    : "post",
                 data    : {
                     "feedbackID"     : "123",
@@ -328,13 +369,19 @@
 
                     var objResult = typeof result == "string" ? JSON.parse(result) : result;
 
-                    debugger;
+                    var btnRateUp = $('.formRate .J_RateUp');
 
-                    $(this).parent().siblings('p').css('visibility', 'hidden');
-                    $(this).siblings('.button').hide();
-                    $(this).text('查看更多精彩');
-                    $(this).on('click', function () {
-                        location.href = objResult.data.link;
+                    btnRateUp.parent().siblings('p').css('visibility', 'hidden');
+                    btnRateUp.siblings('.button').hide();
+                    btnRateUp.text('查看更多精彩');
+                    btnRateUp.off('click');
+                    btnRateUp.on('click', function () {
+                        if (objResult.data.customLink) {
+                            location.href = objResult.data.customLink;
+                        } else {
+                            console.error('错误代码 => ', objResult.code, objResult.msg, objResult.data);
+                            return false;
+                        }
                     });
 
                 },
