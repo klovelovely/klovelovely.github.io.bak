@@ -54,14 +54,6 @@
                     '<div class="path"></div>',
                     '<div class="', nodeContainerClassName, '"></div>',
                     '<div class="', numberContainerClassName, '"></div>',
-                    '<div class="character">',
-                    '<div class="pacman">',
-                    '<div class="head"></div>',
-                    '<div class="forehead forehead-animation"></div>',
-                    '<div class="jaw jaw-animation"></div>',
-                    '</div>',
-                    '<div class="pacman-frontface"></div>',
-                    '</div>',
                     '</div>',
                     '</div>'].join(''),
                 pacmanTemplate    = '<div class="character"> <div class="pacman"> <div class="head"></div> <div class="forehead forehead-animation"></div> <div class="jaw jaw-animation"></div> </div> <div class="pacman-frontface"> </div> </div>';
@@ -78,11 +70,11 @@
                     currentGiftItemNumber = currentGiftLayerIndex * giftNumberPerLayer + i + 1,
                     currentGiftLayer      = $('.' + uniqueGiftLayerSelector),
                     isCurrentPlaceHasGift = giftList[currentGiftItemIndex].giftName != '';
-                if(isCurrentPlaceHasGift){
+                if (isCurrentPlaceHasGift) {
                     console.log('%c第%d个礼物 => ', 'font-weight:bold;', currentGiftItemNumber, giftList[currentGiftItemIndex]);
                 }
 
-                if(isCurrentPlaceHasGift){
+                if (isCurrentPlaceHasGift) {
                     $('<div class="' + giftItemClassName + ' ' + giftItemClassName + currentGiftItemNumber + '"></div>')
                         .appendTo(currentGiftLayer.find('.' + giftListContainerClassName))
                         .css({
@@ -97,15 +89,21 @@
                     nodeItemClassName +
                     ' ' +
                     nodeItemClassName +
-                    currentGiftItemNumber +
+                    Number(i + 1) +
                     '"></div>').appendTo(currentGiftLayer.find('.' + nodeContainerClassName));
                 $('<div class="' +
                     numberItemClassName +
                     ' ' +
                     numberItemClassName +
-                    currentGiftItemNumber +
+                    Number(i + 1) +
                     '">' + currentGiftItemNumber +
                     '</div>').appendTo(currentGiftLayer.find('.' + numberContainerClassName));
+
+                if (objResult.data.currentAction.end == currentGiftItemNumber) {
+                    console.warn('pacman动画将在第 %d 层礼物层播放', currentGiftItemNumber);
+                    $(pacmanTemplate).appendTo(currentGiftLayer.find('.pathContainer'));
+                }
+
             }
 
         }
@@ -130,7 +128,7 @@
             pacman_frontface   = gameContainer.find('.character .pacman-frontface');
 
         var nextGift;
-        if(!hasGift){
+        if (!hasGift) {
             $.each(giftList, function (index, item) {
                 if (index > currentGiftIndex && index < giftList.length) {
                     nextGift = giftList[index];
@@ -167,8 +165,10 @@
         // 显示礼物弹窗 & 表单弹窗 (如果当前位置没有礼物, 则礼物弹窗显示下一个即将获得的礼物, 并提醒还需要几步)
         setTimeout(function () {
             (function () {
+
                 // 表单弹窗
                 $('.formContainer').addClass('animated fadeInUp');
+
                 // 礼物弹窗
                 var giftContainer = $('.giftContainer');
 
@@ -176,18 +176,20 @@
                     giftContainer.find('.giftPhoto').css('background-image', 'url(' + currentGift.giftLogo + ')');
                     giftContainer.find('.giftName').text(currentGift.giftName);
                     giftContainer.find('.giftDesc').text(currentGift.giftDes);
+                    giftContainer.addClass('animated fadeInDown');
                 } else {
                     giftContainer.find('.redeemCode').empty();
-                    if (nextGift) { // 当前步骤上没有礼物, 距离下一个礼物还有 x 步, 显示下一个即将获得的礼物的信息
+                    if (nextGift && nextGift.giftName != "") { // 当前步骤上没有礼物, 距离下一个礼物还有 x 步, 显示下一个即将获得的礼物的信息
                         giftContainer.find('.giftTitle').text('还差 ' + nextGift.needSteps + ' 步就可以获得下一个礼物啦!');
                         giftContainer.find('.giftPhoto').css('background-image', 'url(' + nextGift.giftLogo + ')');
                         giftContainer.find('.giftName').text(nextGift.giftName);
                         giftContainer.find('.giftDesc').text(nextGift.giftDes);
+                        giftContainer.addClass('animated fadeInDown');
                     } else { // 后面已经没有礼物了 (没有实际意义, 暂时不考虑这种可能性)
-                        console.warn('后面已经没有礼物了 (没有实际意义, 暂时不考虑这种可能性)')
+                        console.warn('后面已经没有礼物了 (没有实际意义, 暂时不考虑这种可能性)');
                     }
                 }
-                giftContainer.addClass('animated fadeInDown');
+
                 // 如果是新用户, 则表单弹窗里的内容为填写姓名手机号;
                 // 如果是老用户, 则直接给用户评价选项(满意/不满意).
                 if (objResult.data.user.isNewUser) {
@@ -253,10 +255,21 @@
                 // TODO: %c老顾客 => 从第%s步到第%d步 => objResult.data.currentAction.start为什么是字符串, 而end是数字类型
                 objResult.data.user.isNewUser
                     ? console.log('%c新顾客 => 从第%d步到第%d步 => 当前位置上是否有礼物:%s => 木有兑换码', 'font-family:"Microsoft Yahei";font-size:1.5em;color:#c00;', objResult.data.currentAction.start, objResult.data.currentAction.end, objResult.data.currentAction.hasGift)
-                    : console.log('%c老顾客 => 从第%d步到第%d步 => 当前位置上是否有礼物:%s => 兑换码为%s', 'font-family:"Microsoft Yahei";font-size:1.5em;color:#c00;', Number(objResult.data.currentAction.start), objResult.data.currentAction.end, objResult.data.currentAction.hasGift, objResult.data.currentAction.redeemCode);
+                    : console.log('%c老顾客 => 从第%d步到第%d步 => 当前位置上是否有礼物:%s => 兑换码为%s', 'font-family:"Microsoft Yahei";font-size:1.5em;color:#c00;', objResult.data.currentAction.start, objResult.data.currentAction.end, objResult.data.currentAction.hasGift, objResult.data.currentAction.redeemCode);
 
                 // 初始化礼物信息
                 initGiftInfo(objResult);
+
+                // 判断用户是否已经走到最后一步, 领取完所有奖品了
+                if (objResult.data.currentAction.start == objResult.data.currentAction.end) {
+                    console.warn('之前已经拿到终极礼物了');
+                    alert('您已经获得了终极礼物, 请关注并支持我们后续的活动哟!');
+                    // 表单弹窗
+                    $('.formContainer').addClass('animated fadeInUp');
+                    $('.formGetGift').hide();
+                    $('.formRate').fadeIn();
+                    return false;
+                }
 
                 // 移动pacman到指定步骤
                 gotoStep(objResult);
