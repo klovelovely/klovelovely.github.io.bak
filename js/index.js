@@ -66,14 +66,14 @@
             // 添加礼物(gift), 节点(node), 数字(number)列表
             console.warn('开始向当前礼物层<%d>, 循环填充礼物:', currentGiftLayerIndex + 1);
             for (var i = 0; i < giftNumberPerLayer; i++) {
-                var currentGiftItemIndex  = currentGiftLayerIndex * giftNumberPerLayer + i,
-                    currentGiftItemNumber = currentGiftLayerIndex * giftNumberPerLayer + i + 1,
-                    currentGiftLayer      = $('.' + uniqueGiftLayerSelector),
+                var currentGiftItemIndex    = currentGiftLayerIndex * giftNumberPerLayer + i,
+                    currentGiftItemNumber   = currentGiftLayerIndex * giftNumberPerLayer + i + 1,
+                    currentGiftLayer        = $('.' + uniqueGiftLayerSelector),
                     isCurrentPlaceAvailable = typeof giftList[currentGiftItemIndex] !== "undefined",
                     isCurrentPlaceHasGift;
 
                 // 判断是否已经渲染到最后一步了
-                if (isCurrentPlaceAvailable){
+                if (isCurrentPlaceAvailable) {
                     isCurrentPlaceHasGift = giftList[currentGiftItemIndex].giftName != '';
                 } else {
                     console.warn('所有礼物都已经填充完毕:)');
@@ -132,7 +132,7 @@
             giftNumberPerLayer = 5,
             stepStart          = 'step' + objResult.data.currentAction.start % giftNumberPerLayer,
             stepEnd            = 'step' + objResult.data.currentAction.end % giftNumberPerLayer,
-            currentGiftIndex   = objResult.data.currentAction.end,
+            currentGiftIndex   = objResult.data.currentAction.end - 1,
             giftList           = objResult.data.giftList,
             currentGift        = giftList[currentGiftIndex],
             hasGift            = objResult.data.currentAction.hasGift,
@@ -141,7 +141,7 @@
             pacman_frontface   = gameContainer.find('.character .pacman-frontface');
 
         var nextGift;
-        if (!hasGift) {
+        if (hasGift) {
             $.each(giftList, function (index, item) {
                 if (index > currentGiftIndex && index < giftList.length) {
                     nextGift = giftList[index];
@@ -184,8 +184,8 @@
 
                 // 礼物弹窗
                 var giftContainer = $('.giftContainer');
-
                 if (hasGift) { // 当前步骤上有礼物
+                    console.log('显示礼物弹窗 => 有礼物');
                     giftContainer.find('.giftPhoto').css('background-image', 'url(' + currentGift.giftLogo + ')');
                     giftContainer.find('.giftName').text(currentGift.giftName);
                     giftContainer.find('.giftDesc').text(currentGift.giftDes);
@@ -193,13 +193,14 @@
                 } else {
                     giftContainer.find('.redeemCode').empty();
                     if (nextGift && nextGift.giftName != "") { // 当前步骤上没有礼物, 距离下一个礼物还有 x 步, 显示下一个即将获得的礼物的信息
+                        console.log('显示礼物弹窗 => 距离下一个礼物还有几步');
                         giftContainer.find('.giftTitle').text('还差 ' + nextGift.needSteps + ' 步就可以获得下一个礼物啦!');
                         giftContainer.find('.giftPhoto').css('background-image', 'url(' + nextGift.giftLogo + ')');
                         giftContainer.find('.giftName').text(nextGift.giftName);
                         giftContainer.find('.giftDesc').text(nextGift.giftDes);
                         giftContainer.addClass('animated fadeInDown');
                     } else { // 后面已经没有礼物了 (没有实际意义, 暂时不考虑这种可能性)
-                        console.warn('后面已经没有礼物了 (没有实际意义, 暂时不考虑这种可能性)');
+                        console.warn('后面已经没有礼物了, 不再显示礼物弹窗 (没有实际意义, 暂时不考虑这种可能性)');
                     }
                 }
 
@@ -267,7 +268,7 @@
                 console.log('objResult =>', objResult);
 
                 // 如果今天已经签到, 提示顾客已经签到, 只用渲染pacman地图 + 礼物信息即可
-                if(objResult.code == 601){
+                if (objResult.code == 601) {
                     alert(objResult.msg);
                     console.warn('ajax请求出现问题 => JSON => ' + objResult);
                     // 初始化礼物信息
@@ -276,7 +277,7 @@
                 }
 
                 // 如果出现错误, 向顾客提示错误信息
-                if(objResult.code != 200){
+                if (objResult.code != 200) {
                     alert(objResult.msg);
                     console.warn('ajax请求出现问题 => JSON => ' + objResult);
                     return false;
@@ -365,7 +366,7 @@
                     var btnGetGift = $('.J_GetGift');
 
                     // 如果出现错误, 向顾客提示错误信息
-                    if(objResult.code != 200){
+                    if (objResult.code != 200) {
                         alert(objResult.msg);
                         console.warn('ajax请求出现问题 => JSON => ' + objResult);
                         return false;
@@ -420,7 +421,7 @@
                     var objResult = typeof result == "string" ? JSON.parse(result) : result;
 
                     // 如果出现错误, 向顾客提示错误信息
-                    if(objResult.code != 200){
+                    if (objResult.code != 200) {
                         alert(objResult.msg);
                         console.warn('ajax请求出现问题 => JSON => ' + objResult);
                         return false;
