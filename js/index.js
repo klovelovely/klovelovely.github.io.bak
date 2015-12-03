@@ -265,6 +265,15 @@
                 console.warn('页面加载时, 拿到的初始化数据:');
                 console.log('objResult =>', objResult);
 
+                // 如果今天已经签到, 提示顾客已经签到, 只用渲染pacman地图 + 礼物信息即可
+                if(objResult.code == 601){
+                    alert(objResult.msg);
+                    console.warn('ajax请求出现问题 => JSON => ' + objResult);
+                    // 初始化礼物信息
+                    initGiftInfo(objResult);
+                    return false;
+                }
+
                 // 如果出现错误, 向顾客提示错误信息
                 if(objResult.code != 200){
                     alert(objResult.msg);
