@@ -265,10 +265,10 @@
                 console.warn('页面加载时, 拿到的初始化数据:');
                 console.log('objResult =>', objResult);
 
-                // 如果出现错误, 将完整错误信息alert出来 TODO: 仅供开发时使用, 发布之前需将此段移除
+                // 如果出现错误, 向顾客提示错误信息
                 if(objResult.code != 200){
-                    alert('啊哦, 好像出了点问题, 请稍后再试~ \ncode => ' + objResult.code + '\nmsg => ' + objResult.msg + '\ndata => ' + objResult.data);
-                    console.warn('啊哦, 好像出了点问题, 请稍后再试~ \n状态码: ' + objResult);
+                    alert(objResult.msg);
+                    console.warn('ajax请求出现问题 => JSON => ' + objResult);
                     return false;
                 }
 
@@ -354,10 +354,10 @@
 
                     var btnGetGift = $('.J_GetGift');
 
-                    // 如果出现错误, 将完整错误信息alert出来 TODO: 仅供开发时使用, 发布之前需将此段移除
+                    // 如果出现错误, 向顾客提示错误信息
                     if(objResult.code != 200){
-                        alert('啊哦, 好像出了点问题, 请稍后再试~ \ncode => ' + objResult.code + '\nmsg => ' + objResult.msg + '\ndata => ' + objResult.data);
-                        console.warn('啊哦, 好像出了点问题, 请稍后再试~ \n状态码: ' + objResult);
+                        alert(objResult.msg);
+                        console.warn('ajax请求出现问题 => JSON => ' + objResult);
                         return false;
                     }
 
@@ -408,6 +408,13 @@
                 success : function (result) {
 
                     var objResult = typeof result == "string" ? JSON.parse(result) : result;
+
+                    // 如果出现错误, 向顾客提示错误信息
+                    if(objResult.code != 200){
+                        alert(objResult.msg);
+                        console.warn('ajax请求出现问题 => JSON => ' + objResult);
+                        return false;
+                    }
 
                     var btnRateUp = $('.formRate .J_RateUp');
 
