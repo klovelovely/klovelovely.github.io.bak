@@ -56,12 +56,12 @@
                     '<div class="', numberContainerClassName, '"></div>',
                     '</div>',
                     '</div>'].join(''),
+                // pacman模板
                 pacmanTemplate    = '<div class="character"> <div class="pacman"> <div class="head"></div> <div class="forehead forehead-animation"></div> <div class="jaw jaw-animation"></div> </div> <div class="pacman-frontface"> </div> </div>';
 
             // 礼物层模板
             gameContainer.append(giftLayerTemplate);
             console.log('礼物层模板 giftLayerTemplate =>', gameContainer.children().last());
-            // pacman模板 TODO:获得objResult.data.currentAction.end值, 把pacman放在对应的层开头  (另外, 这个模板似乎应该考虑放在gotoStep()函数体中
 
             // 添加礼物(gift), 节点(node), 数字(number)列表
             console.warn('开始向当前礼物层<%d>, 循环填充礼物:', currentGiftLayerIndex + 1);
@@ -75,10 +75,10 @@
                 }
 
                 if (isCurrentPlaceHasGift) {
-                    $('<div class="' + giftItemClassName + ' ' + giftItemClassName + currentGiftItemNumber + '"></div>')
+                    $('<div class="' + giftItemClassName + ' ' + giftItemClassName + Number(i + 1) + '" data-gift-number="' + currentGiftItemNumber + '"></div>')
                         .appendTo(currentGiftLayer.find('.' + giftListContainerClassName))
                         .css({
-                            'background-image': 'url(' + giftList[currentGiftItemIndex].giftLogo + ')',
+                            'background-image': 'url(' + giftList[currentGiftItemIndex].giftLogo + ')'
                         }).attr({
                             'data-name': giftList[currentGiftItemIndex]['GiftName'],
                             'data-logo': giftList[currentGiftItemIndex]['GiftLogo'],
