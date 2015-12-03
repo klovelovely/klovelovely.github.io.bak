@@ -265,8 +265,9 @@
                 console.warn('页面加载时, 拿到的初始化数据:');
                 console.log('objResult =>', objResult);
 
+                // 如果出现错误, 将完整错误信息alert出来 TODO: 仅供开发时使用, 发布之前需将此段移除
                 if(objResult.code != 200){
-                    alert('啊哦, 好像出了点问题, 请稍后再试~ \n\tcode: ' + objResult.code + '\n\tmsg: ' + objResult.msg + '\n\tdata: ' + objResult.data);
+                    alert('啊哦, 好像出了点问题, 请稍后再试~ \ncode => ' + objResult.code + '\nmsg => ' + objResult.msg + '\ndata => ' + objResult.data);
                     console.warn('啊哦, 好像出了点问题, 请稍后再试~ \n状态码: ' + objResult);
                     return false;
                 }
@@ -353,11 +354,16 @@
 
                     var btnGetGift = $('.J_GetGift');
 
+                    // 如果出现错误, 将完整错误信息alert出来 TODO: 仅供开发时使用, 发布之前需将此段移除
+                    if(objResult.code != 200){
+                        alert('啊哦, 好像出了点问题, 请稍后再试~ \ncode => ' + objResult.code + '\nmsg => ' + objResult.msg + '\ndata => ' + objResult.data);
+                        console.warn('啊哦, 好像出了点问题, 请稍后再试~ \n状态码: ' + objResult);
+                        return false;
+                    }
+
                     // 与后端通信出现错误, 提醒用户并重新启用领取按钮
                     if (objResult.code != "200") {
                         btnGetGift.text('重新领取').removeProp('disabled');
-                        alert('啊哦, 好像出了点问题, 请稍后再试~ \n状态码: ' + objResult);
-                        console.warn('啊哦, 好像出了点问题, 请稍后再试~ \n状态码: ' + objResult);
                         return false;
                     }
 
