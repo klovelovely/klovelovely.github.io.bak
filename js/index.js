@@ -132,14 +132,14 @@
             giftNumberPerLayer = 5,
             stepStart          = 'step' + objResult.data.currentAction.start % giftNumberPerLayer,
             stepEnd            = 'step' + objResult.data.currentAction.end % giftNumberPerLayer,
-            currentGiftIndex   = objResult.data.currentAction.end - 1,
+            currentGiftIndex   = objResult.data.currentAction.end,
             giftList           = objResult.data.giftList,
             currentGift        = giftList[currentGiftIndex],
             hasGift            = objResult.data.currentAction.hasGift,
             character          = gameContainer.find('.character'),
             pacman             = gameContainer.find('.character .pacman'),
             pacman_frontface   = gameContainer.find('.character .pacman-frontface');
-debugger;
+
         var nextGift;
         if (!hasGift) {
             $.each(giftList, function (index, item) {
@@ -211,7 +211,7 @@ debugger;
 
                     // 显示兑换码
                     $('.redeemCode .noCode').hide();
-                    $('.redeemCode .codeGet .code').text(objResult.data.redeemCode).css('color', 'red');
+                    $('.redeemCode .codeGet .code').text(objResult.data.currentAction.redeemCode).css('color', 'red');
                     $('.redeemCode .codeGet').show().addClass('animated bounceIn');
                     setTimeout(function () {
                         $('.redeemCode .codeGet').removeClass('bounceIn').addClass('flash');
