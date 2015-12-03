@@ -69,7 +69,7 @@
                 var currentGiftItemIndex  = currentGiftLayerIndex * giftNumberPerLayer + i,
                     currentGiftItemNumber = currentGiftLayerIndex * giftNumberPerLayer + i + 1,
                     currentGiftLayer      = $('.' + uniqueGiftLayerSelector),
-                    isCurrentPlaceAvailable = giftList[currentGiftItemIndex] != "undefined",
+                    isCurrentPlaceAvailable = typeof giftList[currentGiftItemIndex] !== "undefined",
                     isCurrentPlaceHasGift;
 
                 // 判断是否已经渲染到最后一步了
