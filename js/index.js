@@ -255,7 +255,8 @@
             type    : "post",
             data    : {
                 "openID"    : pacman.openID,
-                "activityID": pacman.activityID
+                "activityID": pacman.activityID,
+                "merchantID": pacman.merchantID
             },
             success : function (result) {
 
@@ -263,6 +264,13 @@
 
                 console.warn('页面加载时, 拿到的初始化数据:');
                 console.log('objResult =>', objResult);
+
+                if(objResult.code != 200){
+                    alert('啊哦, 好像出了点问题, 请稍后再试~ \n\tcode: ' + objResult.code + '\n\tmsg: ' + objResult.msg + '\n\tdata: ' + objResult.data);
+                    console.warn('啊哦, 好像出了点问题, 请稍后再试~ \n状态码: ' + objResult);
+                    return false;
+                }
+
                 // TODO: 老顾客 => 从第10步到第11步 => 这个活动一共只有5步, 这里循环应该做一下限制(最后一次礼物获得之后, 可以考虑让start = end = 最大步数5;
                 // TODO: %c老顾客 => 从第%s步到第%d步 => objResult.data.currentAction.start为什么是字符串, 而end是数字类型
                 objResult.data.user.isNewUser
@@ -348,8 +356,9 @@
                     // 与后端通信出现错误, 提醒用户并重新启用领取按钮
                     if (objResult.code != "200") {
                         btnGetGift.text('重新领取').removeProp('disabled');
+                        alert('啊哦, 好像出了点问题, 请稍后再试~ \n状态码: ' + objResult);
                         console.warn('啊哦, 好像出了点问题, 请稍后再试~ \n状态码: ' + objResult);
-                        return;
+                        return false;
                     }
 
                     // 获取兑换码成功, 显示兑换码
