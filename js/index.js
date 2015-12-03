@@ -185,7 +185,7 @@
                 // 礼物弹窗
                 var giftContainer = $('.giftContainer');
                 if (hasGift) { // 当前步骤上有礼物
-                    console.log('显示礼物弹窗 => 有礼物');
+                    console.log('显示礼物弹窗 => 有礼物 currentGift => ' + currentGift);
                     giftContainer.find('.giftPhoto').css('background-image', 'url(' + currentGift.giftLogo + ')');
                     giftContainer.find('.giftName').text(currentGift.giftName);
                     giftContainer.find('.giftDesc').text(currentGift.giftDes);
@@ -193,7 +193,7 @@
                 } else {
                     giftContainer.find('.redeemCode').empty();
                     if (nextGift && nextGift.giftName != "") { // 当前步骤上没有礼物, 距离下一个礼物还有 x 步, 显示下一个即将获得的礼物的信息
-                        console.log('显示礼物弹窗 => 距离下一个礼物还有几步');
+                        console.log('显示礼物弹窗 => 距离下一个礼物还有几步 nextGift => ' + nextGift);
                         giftContainer.find('.giftTitle').text('还差 ' + nextGift.needSteps + ' 步就可以获得下一个礼物啦!');
                         giftContainer.find('.giftPhoto').css('background-image', 'url(' + nextGift.giftLogo + ')');
                         giftContainer.find('.giftName').text(nextGift.giftName);
