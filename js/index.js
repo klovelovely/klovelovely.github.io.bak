@@ -123,6 +123,62 @@
     }
 
     /**
+     * 根据当前位置是否有礼物, 决定显示当前礼物, 还是提示获得下一个礼物所需要的步数
+     * @param hasGift 当前位置是否有礼物
+     * @param currentGift 当前位置上的礼物数据
+     * @param nextGift 下一个最近礼物的数据
+     * @param objResult 页面加载时后端返回的全部数据, 主要用到了 user.isNewUser, currentAction.redeemCode
+     */
+    function showInteractivePopups(hasGift, currentGift, nextGift, objResult) {
+
+        // 表单弹窗
+        $('.formContainer').addClass('animated fadeInUp');
+
+        // 礼物弹窗
+        var giftContainer = $('.giftContainer');
+        if (hasGift) { // 当前步骤上有礼物
+            console.log('显示礼物弹窗 => 有礼物 currentGift => ', currentGift);
+            giftContainer.find('.giftPhoto').css('background-image', 'url(' + currentGift.giftLogo + ')');
+            giftContainer.find('.giftName').text(currentGift.giftName);
+            giftContainer.find('.giftDesc').text(currentGift.giftDes);
+            giftContainer.addClass('animated fadeInDown');
+        } else {
+            giftContainer.find('.redeemCode').empty();
+            if (nextGift && nextGift.giftName != "") { // 当前步骤上没有礼物, 距离下一个礼物还有 x 步, 显示下一个即将获得的礼物的信息
+                console.log('显示礼物弹窗 => 距离下一个礼物还有几步 nextGift => ', nextGift);
+                giftContainer.find('.giftTitle').text('还差 ' + nextGift.needSteps + ' 步就可以获得下一个礼物啦!');
+                giftContainer.find('.giftPhoto').css('background-image', 'url(' + nextGift.giftLogo + ')');
+                giftContainer.find('.giftName').text(nextGift.giftName);
+                giftContainer.find('.giftDesc').text(nextGift.giftDes);
+                giftContainer.addClass('animated fadeInDown');
+            } else { // 后面已经没有礼物了 (没有实际意义, 暂时不考虑这种可能性)
+                console.warn('后面已经没有礼物了, 不再显示礼物弹窗 (没有实际意义, 暂时不考虑这种可能性)');
+            }
+        }
+
+        // 如果是新用户, 则表单弹窗里的内容为填写姓名手机号;
+        // 如果是老用户, 则直接给用户评价选项(满意/不满意).
+        if (objResult.data.user.isNewUser) {
+            $('.formGetGift').show();
+        } else {
+
+            // 显示兑换码
+            $('.redeemCode .noCode').hide();
+            $('.redeemCode .codeGet .code').text(objResult.data.currentAction.redeemCode).css('color', 'red');
+            $('.redeemCode .codeGet').show().addClass('animated bounceIn');
+            setTimeout(function () {
+                $('.redeemCode .codeGet').removeClass('bounceIn').addClass('flash');
+            }, 1000);
+            setTimeout(function () {
+                $('.formGetGift').hide();
+                $('.formRate').fadeIn();
+            }, 2000);
+
+            $('.formRate').show();
+        }
+    }
+
+    /**
      * 让pacman前进到指定的步骤
      * @param objResult 每一步所包含的礼物等相关信息
      */
@@ -179,51 +235,8 @@
         setTimeout(function () {
             (function () {
 
-                // 表单弹窗
-                $('.formContainer').addClass('animated fadeInUp');
+                showInteractivePopups(hasGift, currentGift, nextGift, objResult);
 
-                // 礼物弹窗
-                var giftContainer = $('.giftContainer');
-                if (hasGift) { // 当前步骤上有礼物
-                    console.log('显示礼物弹窗 => 有礼物 currentGift => ' + currentGift);
-                    giftContainer.find('.giftPhoto').css('background-image', 'url(' + currentGift.giftLogo + ')');
-                    giftContainer.find('.giftName').text(currentGift.giftName);
-                    giftContainer.find('.giftDesc').text(currentGift.giftDes);
-                    giftContainer.addClass('animated fadeInDown');
-                } else {
-                    giftContainer.find('.redeemCode').empty();
-                    if (nextGift && nextGift.giftName != "") { // 当前步骤上没有礼物, 距离下一个礼物还有 x 步, 显示下一个即将获得的礼物的信息
-                        console.log('显示礼物弹窗 => 距离下一个礼物还有几步 nextGift => ' + nextGift);
-                        giftContainer.find('.giftTitle').text('还差 ' + nextGift.needSteps + ' 步就可以获得下一个礼物啦!');
-                        giftContainer.find('.giftPhoto').css('background-image', 'url(' + nextGift.giftLogo + ')');
-                        giftContainer.find('.giftName').text(nextGift.giftName);
-                        giftContainer.find('.giftDesc').text(nextGift.giftDes);
-                        giftContainer.addClass('animated fadeInDown');
-                    } else { // 后面已经没有礼物了 (没有实际意义, 暂时不考虑这种可能性)
-                        console.warn('后面已经没有礼物了, 不再显示礼物弹窗 (没有实际意义, 暂时不考虑这种可能性)');
-                    }
-                }
-
-                // 如果是新用户, 则表单弹窗里的内容为填写姓名手机号;
-                // 如果是老用户, 则直接给用户评价选项(满意/不满意).
-                if (objResult.data.user.isNewUser) {
-                    $('.formGetGift').show();
-                } else {
-
-                    // 显示兑换码
-                    $('.redeemCode .noCode').hide();
-                    $('.redeemCode .codeGet .code').text(objResult.data.currentAction.redeemCode).css('color', 'red');
-                    $('.redeemCode .codeGet').show().addClass('animated bounceIn');
-                    setTimeout(function () {
-                        $('.redeemCode .codeGet').removeClass('bounceIn').addClass('flash');
-                    }, 1000);
-                    setTimeout(function () {
-                        $('.formGetGift').hide();
-                        $('.formRate').fadeIn();
-                    }, 2000);
-
-                    $('.formRate').show();
-                }
             })();
         }, 3600);
 
@@ -270,7 +283,7 @@
                 // 如果今天已经签到, 提示顾客已经签到, 只用渲染pacman地图 + 礼物信息即可
                 if (objResult.code == 601) {
                     alert(objResult.msg);
-                    console.warn('ajax请求出现问题 => JSON => ' + objResult);
+                    console.warn('ajax请求出现问题 => JSON => ', objResult);
                     // 初始化礼物信息
                     initGiftInfo(objResult);
                     return false;
