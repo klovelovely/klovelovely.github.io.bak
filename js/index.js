@@ -72,11 +72,14 @@
                     isCurrentPlaceAvailable = giftList[currentGiftItemIndex] != "undefined",
                     isCurrentPlaceHasGift;
 
+                // 判断是否已经渲染到最后一步了
                 if (isCurrentPlaceAvailable){
                     isCurrentPlaceHasGift = giftList[currentGiftItemIndex].giftName != '';
+                } else {
+                    return false;
                 }
 
-                // 如果当前位置上有礼物
+                // 如果当前位置上有礼物, 就添加礼物层
                 if (isCurrentPlaceHasGift) {
 
                     console.log('%c第%d个礼物 => ', 'font-weight:bold;', currentGiftItemNumber, giftList[currentGiftItemIndex]);
@@ -91,6 +94,8 @@
                             'data-desc': giftList[currentGiftItemIndex]['GiftDes']
                         });
                 }
+
+                // 添加当前节点必备的元素: 小圆点, 数字
                 $('<div class="' +
                     nodeItemClassName +
                     ' ' +
@@ -105,6 +110,7 @@
                     '">' + currentGiftItemNumber +
                     '</div>').appendTo(currentGiftLayer.find('.' + numberContainerClassName));
 
+                // 如果pacman动画的终点是这里, 那么就提前把pacman先放在这一层的最左侧开始位置, 为之后的动画作准备
                 if (objResult.data.currentAction.end == currentGiftItemNumber) {
                     console.warn('pacman动画将在第 %d 层礼物层播放', currentGiftItemNumber);
                     $(pacmanTemplate).appendTo(currentGiftLayer.find('.pathContainer'));
