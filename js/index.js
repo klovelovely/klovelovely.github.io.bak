@@ -69,12 +69,18 @@
                 var currentGiftItemIndex  = currentGiftLayerIndex * giftNumberPerLayer + i,
                     currentGiftItemNumber = currentGiftLayerIndex * giftNumberPerLayer + i + 1,
                     currentGiftLayer      = $('.' + uniqueGiftLayerSelector),
+                    isCurrentPlaceAvailable = giftList[currentGiftItemIndex] != "undefined",
+                    isCurrentPlaceHasGift;
+
+                if (isCurrentPlaceAvailable){
                     isCurrentPlaceHasGift = giftList[currentGiftItemIndex].giftName != '';
-                if (isCurrentPlaceHasGift) {
-                    console.log('%c第%d个礼物 => ', 'font-weight:bold;', currentGiftItemNumber, giftList[currentGiftItemIndex]);
                 }
 
+                // 如果当前位置上有礼物
                 if (isCurrentPlaceHasGift) {
+
+                    console.log('%c第%d个礼物 => ', 'font-weight:bold;', currentGiftItemNumber, giftList[currentGiftItemIndex]);
+
                     $('<div class="' + giftItemClassName + ' ' + giftItemClassName + Number(i + 1) + '" data-gift-number="' + currentGiftItemNumber + '"></div>')
                         .appendTo(currentGiftLayer.find('.' + giftListContainerClassName))
                         .css({
