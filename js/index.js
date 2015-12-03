@@ -76,6 +76,7 @@
                 if (isCurrentPlaceAvailable){
                     isCurrentPlaceHasGift = giftList[currentGiftItemIndex].giftName != '';
                 } else {
+                    console.warn('所有礼物都已经填充完毕:)');
                     return false;
                 }
 
@@ -138,7 +139,7 @@
             character          = gameContainer.find('.character'),
             pacman             = gameContainer.find('.character .pacman'),
             pacman_frontface   = gameContainer.find('.character .pacman-frontface');
-
+debugger;
         var nextGift;
         if (!hasGift) {
             $.each(giftList, function (index, item) {
