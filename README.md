@@ -1,2 +1,0 @@
-# pacman
-pacman animatin demo
